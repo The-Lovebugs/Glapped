@@ -12,7 +12,7 @@ def product_page(request, pk):
 
 def createListing(request):
     if request.method == "POST":
-        form = CreateNewListing(request.POST)
+        form = CreateNewListing(request.POST, request.FILES)
         if form.is_valid():
             title = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
