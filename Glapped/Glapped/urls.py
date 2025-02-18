@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Glapped_main.urls')),
     path('register/', register, name='register'),
+    path('', include('django.contrib.auth.urls')),
 ]
