@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: blanchedalmond;
+}
+
+nav{
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #052204;
+
+}
+.logo{
+    width: 50px;
+    margin-left: 40px;
+}
+
+nav ul li{
+    font-weight: bold;
+    display: inline-block;
+    list-style: none;
+    margin: 10px 15px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    font-weight: bolder;
+    color:blanchedalmond;
+}
+
+.login-button{
+    font-weight: bolder;
+    text-decoration: none;
+    color: blanchedalmond;
+    margin-right: 15px;
+}
+
+.bgb-button{
+    margin-right: 40px;
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 20px;
+    color: blanchedalmond;
+    background-image: linear-gradient(45deg, #052204,#70ad64);
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+}
+
+.homepage{
+    margin-left: 40px;
+    margin-top: 10%;
+    max-width: 800px;
+}
+
+.homepage h1{
+    font-size: 140px;
+    font-weight: bolder;
+    color: #052204;
+}
+
+.homepage p{
+    font-weight: bolder;
+    color: #052204;
+    margin: 10px 0 30px;
+}
+
+.homepage-img{
+    width:530px;
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+}
+
+.animated{
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.5s linear forwards;
+}
+
+@keyframes moveup{
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
