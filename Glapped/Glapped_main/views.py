@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from .models import Product
 from .forms import CreateNewListing
 # Create your views here.
@@ -7,7 +7,6 @@ def home(request):
     return render(request, 'home.html', {"products": products})
 
 def createListing(request):
-    form = CreateNewListing()
     if request.method == "POST":
         form = CreateNewListing(request.POST)
         if form.is_valid():
@@ -15,5 +14,10 @@ def createListing(request):
             description = form.cleaned_data["description"]
             price = form.cleaned_data["price"]
             Product.objects.create(name=title, description=description, price=price)
-            return HttpResponse("Listing created!")
+            return HttpResponseRedirect("/")
+        else:
+            return HttpResponse("Invalid form")
+    else:
+        form = CreateNewListing()
+
     return render(request, 'createListing.html', {"form": form})
