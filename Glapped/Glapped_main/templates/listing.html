@@ -7,8 +7,7 @@
     <button type="submit">Logout</button>
 </form>
 
-{{ product.name }}
-<img src="{{product.image.url}}" width = "200">
-{{ product.description }}
-{{ product.price }}
+<h3>{{ product.name }}</h3><br>
+<img src="{{product.image.url}}" width = "200"><br>
+{{ product.description }} - {{ product.price }}
 {% endblock %}
