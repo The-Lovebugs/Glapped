@@ -7,5 +7,5 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField()
     description = models.TextField()
-    #image = models.ImageField(upload_to='product_images')
+    image = models.ImageField(upload_to='product_images', default='resources/default.jpg')
     category = models.CharField(max_length=255)

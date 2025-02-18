@@ -1,0 +1,14 @@
+{% extends "base.html" %}  
+{% block content %}
+<h1> Product: </h1>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+{{ product.name }}
+{{ product.image}}
+{{ product.description }}
+{{ product.price }}
+{% endblock %}
