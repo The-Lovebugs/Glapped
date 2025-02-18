@@ -17,7 +17,8 @@ def createListing(request):
             title = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
             price = form.cleaned_data["price"]
-            Product.objects.create(name=title, description=description, price=price)
+            image = form.cleaned_data["image"]
+            Product.objects.create(name=title, description=description, price=price, image=image)
             return HttpResponseRedirect("/")
         else:
             return HttpResponse("Invalid form")
