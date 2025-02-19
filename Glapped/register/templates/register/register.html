@@ -1,11 +1,46 @@
-{% extends "loginBase.html"%} {% block title %} Create an account {% endblock %} 
+{% extends "loginBase.html" %}
+{% block title %} Create an account {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="custom-form-container">
-        {%csrf_token%}
         <form method="POST" class="custom-form">
             {% csrf_token %}
             {{ form|crispy }}
+
+            <!-- Error Messages (Hidden Initially) -->
+            <div class="error-message" id="username-error"></div>
+            <div class="error-message" id="password-error"></div>
+
             <button type="submit" class="btn btn-success">Register</button>
-        </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let usernameField = document.querySelector("#id_username"); 
+            let passwordField = document.querySelector("#id_password1"); 
+            let usernameError = document.getElementById("username-error");
+            let passwordError = document.getElementById("password-error");
+
+            // Check if Django returned errors and display them
+            {% if form.username.errors %}
+                usernameError.innerHTML = "{{ form.username.errors|striptags }}";
+                usernameError.style.display = "block";
+            {% endif %}
+
+            {% if form.password1.errors %}
+                passwordError.innerHTML = "{{ form.password1.errors|striptags }}";
+                passwordError.style.display = "block";
+            {% endif %}
+
+            // Hide error message on user input
+            usernameField.addEventListener("input", () => {
+                usernameError.style.display = "none";
+            });
+
+            passwordField.addEventListener("input", () => {
+                passwordError.style.display = "none";
+            });
+        });
+    </script>
 {% endblock %}

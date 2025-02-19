@@ -150,9 +150,24 @@ nav ul li a{
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
     margin:auto;
-    width: 350px;
+    width: 500px;
     align-self: center;
-    margin-top: 10%;
+    margin-top: 5%;
+    color: #90af8a;
+    font-weight: bold;
+}
+
+.custom-form-container div{
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.custom-form-container li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    list-style: none;
 }
 
 .custom-form-container h2 {
@@ -228,3 +243,4 @@ nav ul li a{
     -webkit-box-shadow: 0 0 0px 1000px blanchedalmond inset !important;
     -webkit-text-fill-color: #052204 !important;
 }
+
