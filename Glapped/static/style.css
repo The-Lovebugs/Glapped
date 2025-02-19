@@ -43,16 +43,12 @@ nav ul li a{
 }
 
 .login-button{
-    font-weight: bold;
+    font-weight: bolder;
     text-decoration: none;
     color: blanchedalmond;
     margin-right: 15px;
-    transition: 0.3s;
 }
-.login-button:hover{
-    font-weight: bolder;
-    color: #fff;
-}
+
 
 
 .bgb-button{
