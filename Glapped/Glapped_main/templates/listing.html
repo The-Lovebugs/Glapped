@@ -1,0 +1,13 @@
+{% extends "base.html" %}  
+{% block content %}
+<h1> Product: </h1>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+<h3>{{ product.name }}</h3><br>
+<img src="{{product.image.url}}" width = "200"><br>
+{{ product.description }} - {{ product.price }}
+{% endblock %}
