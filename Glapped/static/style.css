@@ -1,0 +1,169 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: blanchedalmond;
+}
+
+.hero{
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+nav{
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #052204;
+
+}
+.logo{
+    width: 50px;
+    margin-left: 40px;
+}
+
+.search{
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    border-radius: 28px;
+    background: #125227;
+    width: 600px;
+    transition: 0.5s;
+}
+
+.search:focus-within{
+    box-shadow: 0 0 8px rgb(28, 80, 23);
+}
+
+.search-icon{
+    color: #90af8a;
+}
+
+.search-input{
+    font-size: 16px;
+    color: blanchedalmond;
+    margin-left: 14px;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
+}
+
+nav ul li a{
+    text-decoration: none;
+    font-weight: bolder;
+    color:blanchedalmond;
+}
+
+.login-button{
+    font-weight: 700;
+    text-decoration: none;
+    color: blanchedalmond;
+    margin-right: 15px;
+}
+
+.login-button:hover{
+    color: #fff;
+}
+
+.bgb-button{
+    margin-right: 40px;
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 20px;
+    color: blanchedalmond;
+    background-image: linear-gradient(45deg, #052204,#70ad64);
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.bgb-button:hover{
+    background-image: linear-gradient(45deg, #052204,#9be78b);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 45px;
+    margin-left: 5px;
+    padding: 10px 15px;
+    color: rgb(255, 255, 255);
+}
+
+.homepage{
+    margin-left: 40px;
+    margin-top: 10%;
+    max-width: 800px;
+}
+
+.homepage h1{
+    font-size: 140px;
+    font-weight: bolder;
+    color: #052204;
+}
+
+.homepage p{
+    font-weight: bolder;
+    color: #052204;
+    margin: 10px 0 30px;
+}
+
+.homepage-img{
+    width:530px;
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+}
+
+.animated{
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.5s linear forwards;
+}
+
+@keyframes moveup{
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-form{
+    color: #fff;
+}
+.custom-form input{
+    font-size: 16px;
+    color: blanchedalmond;
+    margin-left: 14px;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
+}
+.custom-form select, 
+.custom-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}

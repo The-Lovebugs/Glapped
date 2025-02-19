@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %} 
 {% block content %}
 
-<form method="post" action="/createlisting/">
+<form method="post" action="/createlisting/" enctype ="multipart/form-data">
     {% csrf_token %}
     {{form}}
     <button type="submit">Create Listing</button>

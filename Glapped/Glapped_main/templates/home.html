@@ -10,7 +10,9 @@
 <ul>
     {% for product in products %}
     <li>
-        {{ product.name }} - {{ product.description }} - {{ product.price }}
+        <a href="{% url 'product_page' product.pk %}"><img src="{{product.image.url}}" width = "200"><br>
+        </a>
+        <a href="{% url 'product_page' product.pk %}">{{ product.name }} - {{ product.description }} - {{ product.price }}</a>
     </li>
     {% endfor %}
 </ul>
