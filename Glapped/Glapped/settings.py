@@ -132,7 +132,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGOUT_REDIRECT_URL = '/login' #anywhere you like
+LOGOUT_REDIRECT_URL = '/' #anywhere you like
 LOGIN_REDIRECT_URL = '/' #anywhere you like
 
 # Static files (CSS, JavaScript, images)
