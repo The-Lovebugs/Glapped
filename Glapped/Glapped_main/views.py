@@ -12,12 +12,13 @@ def product_page(request, pk):
 
 def createListing(request):
     if request.method == "POST":
-        form = CreateNewListing(request.POST)
+        form = CreateNewListing(request.POST, request.FILES)
         if form.is_valid():
             title = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
             price = form.cleaned_data["price"]
-            Product.objects.create(name=title, description=description, price=price)
+            image = form.cleaned_data["image"]
+            Product.objects.create(name=title, description=description, price=price, image=image)
             return HttpResponseRedirect("/")
         else:
             return HttpResponse("Invalid form")
