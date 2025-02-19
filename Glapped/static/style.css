@@ -140,7 +140,7 @@ nav ul li a{
 .custom-form label{
     font-weight: bold;
     font-size: larger;
-    color: #052204;
+    color: #bafdb8;
 }
 
 .custom-form-container {
@@ -168,8 +168,10 @@ nav ul li a{
     border: none;
     border-radius: 8px;
     font-size: 16px;
-    background: #f5f5f5;
+    background: blanchedalmond;
     text-align: center;
+    font-weight: bold;
+    color: #052204;
 }
 
 .custom-form input:focus {
@@ -197,6 +199,8 @@ nav ul li a{
 .custom-form p {
     margin-top: 15px;
     color: blanchedalmond;
+    font-weight: bold;
+    font-size: small;
 }
 
 .custom-form a {
@@ -204,9 +208,8 @@ nav ul li a{
     text-decoration: none;
     color: blanchedalmond;
     background-color: #2d6a4f;
-    font-size: 20px;
     font-weight: bolder;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 10px 8px;
     transition: 0.3s;
 }
@@ -215,4 +218,13 @@ nav ul li a{
 .custom-form a:hover {
     background-color: #155734;
     color: white;
+}
+
+.custom-form input:-webkit-autofill,
+.custom-form input:-webkit-autofill:hover,
+.custom-form input:-webkit-autofill:focus,
+.custom-form input:-webkit-autofill:active {
+    background: blanchedalmond !important;
+    -webkit-box-shadow: 0 0 0px 1000px blanchedalmond inset !important;
+    -webkit-text-fill-color: #052204 !important;
 }
