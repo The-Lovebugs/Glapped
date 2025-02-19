@@ -6,15 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Glapped</title>
         <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
         <div class = "hero">
             <nav>
                 <a href="/">
                     <img src="{% static 'duck.png' %}" class="logo" alt="Home">
                 </a>
                 <ul>
-                    <div>
-                    <li> <input type="text" placeholder="Search.."></li>
-                    <li><button type="submit"></li>
+                    <div class ="search">
+                        <span class="material-symbols-outlined search-icon">search</span>
+                        <input class="search-input" type="search" placeholder="Search">
                     </div>
                 </ul>
                 <div>

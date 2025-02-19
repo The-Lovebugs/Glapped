@@ -29,11 +29,34 @@ nav{
     margin-left: 40px;
 }
 
-nav ul li{
-    font-weight: bold;
-    display: inline-block;
-    list-style: none;
-    margin: 10px 15px;
+.search{
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    border-radius: 28px;
+    background: #125227;
+    width: 600px;
+    transition: 0.5s;
+}
+
+.search:focus-within{
+    box-shadow: 0 0 8px rgb(28, 80, 23);
+}
+
+.search-icon{
+    color: #90af8a;
+}
+
+.search-input{
+    font-size: 16px;
+    color: blanchedalmond;
+    margin-left: 14px;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
 }
 
 nav ul li a{
@@ -43,13 +66,15 @@ nav ul li a{
 }
 
 .login-button{
-    font-weight: bolder;
+    font-weight: 700;
     text-decoration: none;
     color: blanchedalmond;
     margin-right: 15px;
 }
 
-
+.login-button:hover{
+    color: #fff;
+}
 
 .bgb-button{
     margin-right: 40px;
@@ -110,4 +135,35 @@ nav ul li a{
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.custom-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-form{
+    color: #fff;
+}
+.custom-form input{
+    font-size: 16px;
+    color: blanchedalmond;
+    margin-left: 14px;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
+}
+.custom-form select, 
+.custom-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
 }
