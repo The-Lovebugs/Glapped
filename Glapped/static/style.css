@@ -9,6 +9,13 @@ body {
     background-color: blanchedalmond;
 }
 
+.hero{
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
 nav{
     padding: 10px 0;
     display: flex;
@@ -36,11 +43,17 @@ nav ul li a{
 }
 
 .login-button{
-    font-weight: bolder;
+    font-weight: bold;
     text-decoration: none;
     color: blanchedalmond;
     margin-right: 15px;
+    transition: 0.3s;
 }
+.login-button:hover{
+    font-weight: bolder;
+    color: #fff;
+}
+
 
 .bgb-button{
     margin-right: 40px;
@@ -52,6 +65,17 @@ nav ul li a{
     font-size: 20px;
     font-weight: bolder;
     border-radius: 30px;
+    transition: 0.3s;
+}
+
+.bgb-button:hover{
+    background-image: linear-gradient(45deg, #052204,#9be78b);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 45px;
+    margin-left: 5px;
+    padding: 10px 15px;
+    color: rgb(255, 255, 255);
 }
 
 .homepage{

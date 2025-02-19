@@ -12,7 +12,10 @@
                     <img src="{% static 'duck.png' %}" class="logo" alt="Home">
                 </a>
                 <ul>
-                    <li><a href ="/">Search</a></li>
+                    <div>
+                    <li> <input type="text" placeholder="Search.."></li>
+                    <li><button type="submit"></li>
+                    </div>
                 </ul>
                 <div>
                     {% if user.is_authenticated %}
