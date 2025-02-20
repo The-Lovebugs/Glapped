@@ -42,4 +42,15 @@
             
         </div>
     </head>
+    <body>
+        <footer class="footer">
+            <p>&copy; 2025 Glapped | All Rights Reserved</p>
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="bgb-button">Logout</button>
+            </form>
+            {% endif %}
+        </footer>
+    </body>
 </html>
