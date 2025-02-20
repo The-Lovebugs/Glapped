@@ -27,7 +27,7 @@ nav{
 }
 .logo{
     width: 50px;
-    margin-left: 40px;
+    margin-left: 20px;
 }
 
 .search{
@@ -97,8 +97,8 @@ nav ul li a{
 }
 
 .homepage{
-    margin-left: 40px;
-    margin-top: 10%;
+    margin-left: 50px;
+    margin-top: 60px;
     max-width: 800px;
 }
 
@@ -187,7 +187,7 @@ nav ul li a{
 }
 
 .custom-form input:focus {
-    outline: 2px solid #b2dfdb;
+    outline: 2px solid  #b2dfdb;
 }
 
 .custom-form button {
@@ -275,4 +275,116 @@ nav ul li a{
     bottom: 0;
     width: 100%;
     height: 60px;
+}
+
+.account-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.account-container h2 {
+    color: #28a745;
+}
+
+.account-container p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Product page styling */
+
+/* Container for the entire product details */
+.product-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px;
+    padding: 0 15px;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    max-width: 800px;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section for Product Image */
+.product-image {
+    flex: 1;
+    max-width: 400px; /* Control image size */
+    padding-right: 20px;
+}
+
+.product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Right Section for Product Info (Title, Description, Price) */
+.product-info {
+    flex: 2; /* Take up twice the space of the image */
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Title Styling */
+.product-title {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Description Styling */
+.description {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Price Styling */
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+/* Add to Cart Button */
+.product-actions {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%; /* Make the button container take up full width */
+}
+
+.btn-add-to-cart {
+    display: inline-block;
+    text-decoration: none;
+    padding: 8px 14px;
+    color: blanchedalmond;
+    background-image: linear-gradient(45deg, #0a4608,#70ad64);
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+    transition: 0.4s;
+}
+
+.btn-add-to-cart:hover{
+    background-image: linear-gradient(45deg, #052204,#9be78b);
+    color: rgb(255, 255, 255);
+    transform: scale(0.97);
 }

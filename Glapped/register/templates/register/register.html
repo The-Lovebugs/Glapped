@@ -1,11 +1,29 @@
-{% extends "loginBase.html"%} {% block title %} Create an account {% endblock %} 
+{% extends "loginBase.html" %}
+{% block title %}Create an account{% endblock %}
 {% load crispy_forms_tags %}
+
 {% block content %}
     <div class="custom-form-container">
-        {%csrf_token%}
         <form method="POST" class="custom-form">
             {% csrf_token %}
+            
+            <!-- Display form errors here -->
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <!-- Display form fields using crispy -->
             {{ form|crispy }}
+
             <button type="submit" class="btn btn-success">Register</button>
-        </div>
+        </form>
+    </div>
 {% endblock %}
