@@ -243,4 +243,24 @@ nav ul li a{
     -webkit-box-shadow: 0 0 0px 1000px blanchedalmond inset !important;
     -webkit-text-fill-color: #052204 !important;
 }
+.product-preview {
+    width: 250px;
+    height: 300px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 0.3s;
+}
 
+.product-preview:hover{
+    border: 4px solid #ffffff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Creates a responsive grid */
+    gap: 10px; /* Adds spacing between grid items */
+    justify-content: center;
+    padding: 20px;
+}
