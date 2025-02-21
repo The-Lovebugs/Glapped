@@ -1,13 +1,25 @@
-{% extends "base.html" %}  
+{% extends "base.html" %}
+
 {% block content %}
-<h1> Product: </h1>
+<div class="product-container">
+    <div class="product-details">
+        <!-- Product Image on the left -->
+        <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+        </div>
 
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+        <!-- Product Info (Title, Description, Price, and Add to Cart) on the right -->
+        <div class="product-info">
+            <h1 class="product-title">{{ product.name }}</h1>
 
-<h3>{{ product.name }}</h3><br>
-<img src="{{product.image.url}}" width = "200"><br>
-{{ product.description }} - {{ product.price }}
+            <p class="description">{{ product.description }}</p>
+            <p class="price">{{ product.price }} points</p>
+
+            <!-- Add to Cart Button -->
+            <div class="product-actions">
+                <button class="btn btn-add-to-cart">Buy now</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

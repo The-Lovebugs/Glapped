@@ -1,11 +1,14 @@
-{% extends "loginBase.html"%}
-{% block title %} Create an account {% endblock %} 
+{% extends "loginBase.html" %}
+{% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-{%csrf_token%}
-<form method="POST" class="custom-form">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="bgb-button">Login</button>
-    <p>Don't have an account? <a href="/register">Register</a></p>
+<div class="custom-form-container">
+    <h2>Sign In</h2>
+    <form method="POST" class="custom-form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit">Sign In</button>
+        <p>Don't have an account? <a href="/register">Register</a></p>
+    </form>
+</div>
 {% endblock %}

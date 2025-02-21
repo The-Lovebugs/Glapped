@@ -7,6 +7,7 @@
 
 body {
     background-color: blanchedalmond;
+    padding-bottom: 60px;
 }
 
 .hero{
@@ -26,7 +27,7 @@ nav{
 }
 .logo{
     width: 50px;
-    margin-left: 40px;
+    margin-left: 20px;
 }
 
 .search{
@@ -77,31 +78,27 @@ nav ul li a{
 }
 
 .bgb-button{
-    margin-right: 40px;
+    margin-right: 20px;
     display: inline-block;
     text-decoration: none;
-    padding: 14px 20px;
+    padding: 8px 14px;
     color: blanchedalmond;
     background-image: linear-gradient(45deg, #052204,#70ad64);
     font-size: 20px;
     font-weight: bolder;
     border-radius: 30px;
-    transition: 0.3s;
+    transition: 0.5s;
 }
 
 .bgb-button:hover{
     background-image: linear-gradient(45deg, #052204,#9be78b);
-    margin-top: 4px;
-    margin-bottom: 4px;
-    margin-right: 45px;
-    margin-left: 5px;
-    padding: 10px 15px;
     color: rgb(255, 255, 255);
+    transform: scale(0.90);
 }
 
 .homepage{
-    margin-left: 40px;
-    margin-top: 10%;
+    margin-left: 50px;
+    margin-top: 60px;
     max-width: 800px;
 }
 
@@ -137,33 +134,257 @@ nav ul li a{
     }
 }
 
-.custom-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    margin: auto;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.custom-form label{
+    font-weight: bold;
+    font-size: larger;
+    color: #bafdb8;
 }
 
-.custom-form{
-    color: #fff;
+.custom-form-container {
+    background: #1b4d3e;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin:auto;
+    width: 500px;
+    align-self: center;
+    margin-top: 5%;
+    color: #90af8a;
+    font-weight: bold;
 }
-.custom-form input{
-    font-size: 16px;
-    color: blanchedalmond;
-    margin-left: 14px;
-    font-weight: bolder;
-    outline: none;
-    border: none;
-    background: transparent;
-    flex: 1;
-}
-.custom-form select, 
-.custom-form textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+
+.custom-form-container div{
+    text-align: left;
+    margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.custom-form-container li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    list-style: none;
+}
+
+.custom-form-container h2 {
+    color: blanchedalmond;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.custom-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: blanchedalmond;
+    text-align: center;
+    font-weight: bold;
+    color: #052204;
+}
+
+.custom-form input:focus {
+    outline: 2px solid  #b2dfdb;
+}
+
+.custom-form button {
+    background: #2d6a4f;
+    color: blanchedalmond;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.custom-form button:hover {
+    background: #155734;
+    color: white;
+}
+
+.custom-form p {
+    margin-top: 15px;
+    color: blanchedalmond;
+    font-weight: bold;
+    font-size: small;
+}
+
+.custom-form a {
+    display: inline-block;
+    text-decoration: none;
+    color: blanchedalmond;
+    background-color: #2d6a4f;
+    font-weight: bolder;
+    border-radius: 8px;
+    padding: 10px 8px;
+    transition: 0.3s;
+}
+
+
+.custom-form a:hover {
+    background-color: #155734;
+    color: white;
+}
+
+.custom-form input:-webkit-autofill,
+.custom-form input:-webkit-autofill:hover,
+.custom-form input:-webkit-autofill:focus,
+.custom-form input:-webkit-autofill:active {
+    background: blanchedalmond !important;
+    -webkit-box-shadow: 0 0 0px 1000px blanchedalmond inset !important;
+    -webkit-text-fill-color: #052204 !important;
+}
+.product-preview {
+    width: 250px;
+    height: 300px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 0.3s;
+}
+
+.product-preview:hover{
+    transform: scale(1.02);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Creates a responsive grid */
+    gap: 10px; /* Adds spacing between grid items */
+    justify-content: center;
+    padding: 20px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between; /* Aligns items to the left and right */
+    align-items: center;
+    padding: 10px;
+    padding-left: 20px;
+    background-color: #052204;
+    font-size: 16px;
+    color: #ffffff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
+
+.account-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.account-container h2 {
+    color: #28a745;
+}
+
+.account-container p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Product page styling */
+
+/* Container for the entire product details */
+.product-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px;
+    padding: 0 15px;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    max-width: 800px;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section for Product Image */
+.product-image {
+    flex: 1;
+    max-width: 400px; /* Control image size */
+    padding-right: 20px;
+}
+
+.product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Right Section for Product Info (Title, Description, Price) */
+.product-info {
+    flex: 2; /* Take up twice the space of the image */
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Title Styling */
+.product-title {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Description Styling */
+.description {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Price Styling */
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+/* Add to Cart Button */
+.product-actions {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%; /* Make the button container take up full width */
+}
+
+.btn-add-to-cart {
+    display: inline-block;
+    text-decoration: none;
+    padding: 8px 14px;
+    color: blanchedalmond;
+    background-image: linear-gradient(45deg, #0a4608,#70ad64);
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+    transition: 0.4s;
+}
+
+.btn-add-to-cart:hover{
+    background-image: linear-gradient(45deg, #052204,#9be78b);
+    color: rgb(255, 255, 255);
+    transform: scale(0.97);
 }
