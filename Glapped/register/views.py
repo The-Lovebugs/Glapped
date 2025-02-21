@@ -3,24 +3,33 @@ from django.contrib.auth import login, authenticate
 from .forms import RegisterForm
 from .models import UserProfile
 from django.contrib.auth.models import User
-# Create your views here.
+
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
-        if form.is_valid():    
-            form.save(commit=False)
+        if form.is_valid():
+            # Save the user object without committing to the database yet
+            user = form.save(commit=False)
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             email = form.cleaned_data.get('email')
 
-            form.save()
+            # Now save the user to the database
+            user.save()
+
+            # Authenticate the user and log them in
             user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            user = User.objects.get(username=username)
-            userprofile = UserProfile.objects.create(user=user)
-            userprofile.save()
+            if user is not None:
+                login(request, user)
+
+            # Check if the user already has a profile; if not, create one
+            userprofile, created = UserProfile.objects.get_or_create(user=user)
+            if created:
+                # You can set default points here if you'd like (e.g. 0)
+                userprofile.points = 0
+                userprofile.save()
 
             return redirect('/')
-    
+
     form = RegisterForm()
     return render(request, 'register/register.html', {"form": form})
