@@ -12,6 +12,6 @@ class ProductTestCase(TestCase):
             'category': 'Clothes'}
     def test_createListing(self):
         # send product data
-        response = self.client.post('/createlisting/', self.productdetails, follow=True)
+        self.client.post('/createlisting/', self.productdetails, follow=True)
         # Check if the user is created in the database
-        self.assertTrue(Product.objects.filter(username=self.productdetails['name']).exists())
+        self.assertTrue(Product.objects.filter(name=self.productdetails['name']).exists())
