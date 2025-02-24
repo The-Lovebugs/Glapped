@@ -10,10 +10,18 @@ class LogInTest(TestCase):
             'username': 'testuser',
             'email': 'testuser@exeter.ac.uk',
             'password1': 'P455w0rd9!',
-            'password2': 'P455w0rd9!'}
+            'password2': 'P455w0rd9!'
+            }
+        self.credentials2 = {
+            'username': 'testformuser',
+            'email': 'testuser@exeter.ac.uk',
+            'password1': 'P455w0rd9!',
+            'password2': 'P455w0rd9!'
+            }
         self.client.post('/register/', data=self.credentials, follow=True)
     def test_register_form(self):
-        form = RegisterForm(data=self.credentials)
+        form = RegisterForm(data=self.credentials2)
+        print(form.errors)
         self.assertTrue(form.is_valid())
     def test_login(self):
         # send login data
