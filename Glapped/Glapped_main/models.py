@@ -55,6 +55,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product_images', default='resources/default.jpg')
     category = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
+    sold = models.BooleanField(default=False)
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='buyer')
     def get_category_display(self):
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)

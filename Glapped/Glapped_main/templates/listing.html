@@ -20,7 +20,8 @@
 
             <!-- Add to Cart Button -->
             <div class="product-actions">
-                <button class="btn btn-buy">Buy now</button>
+
+                <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
             </div>
         </div>
     </div>
