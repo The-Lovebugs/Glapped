@@ -13,10 +13,10 @@
                     <img src="{% static 'duck.png' %}" class="logo" alt="Home">
                 </a>
                 <ul>
-                    <div class ="search">
-                        <span class="material-symbols-outlined search-icon">search</span>
-                        <input class="search-input" type="search" placeholder="Search">
-                    </div>
+                    <form action="{% url 'search' %}" method="GET" class="search">
+                        <button type = submit class="search-button material-symbols-outlined search-icon">search</button>
+                        <input class="search-input" type="search" name = 'q' placeholder="Search">
+                    </form>
                 </ul>
                 <div>
                     {% if user.is_authenticated %}

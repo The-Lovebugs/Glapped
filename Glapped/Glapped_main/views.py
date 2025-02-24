@@ -15,6 +15,11 @@ def product_page(request, pk):
 def account(request):
     return render(request, 'account.html')
 
+def search(request):
+    query = request.GET.get('q','')
+    products = Product.objects.filter(name__icontains=query) if query else []
+    return render(request, 'search.html', {'products': products, 'query': query})
+
 def createListing(request):
     if request.method == "POST":
         form = CreateNewListing(request.POST, request.FILES)
