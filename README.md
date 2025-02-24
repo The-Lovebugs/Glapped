@@ -8,7 +8,7 @@ Glapped Is an all-new vintage and second-hand fashion trading for your Campus. B
 
 The project can be built and ran using Python, we recommend version 3.13.2 and up.
   
-### Installing dependancies
+### Installing dependencies
 With python installed to path - 
 ```bash
   pip install django pillow crispy-bootstrap4
@@ -35,6 +35,13 @@ First, download the current source code and locate the installed folder. Then Ru
   python manage.py runserver
 ```
 
+## Running Tests
+In order to run unit tests, make sure you are in the installed project folder within a terminal, then run - 
+```bash
+  python manage.py test
+```
+
+
 ## Usage/Examples
 ### Creating an account
 ![Register](https://i.imgur.com/fMlRktY.png)
@@ -57,7 +64,7 @@ In order to successfully create a listing, complete the required fields and prov
 ![Listings](https://i.imgur.com/iKc9gtx.png)
 The Admin panel can be found at ```<hosted url>/admin/```   
   
-In order to use an admin accuont, first create a super user via commandline. This can be done by performing the command -
+In order to use an admin account, first create a super user via commandline. This can be done by performing the command -
   
 ```bash
   python manage.py createsuperuser
