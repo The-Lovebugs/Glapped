@@ -6,6 +6,39 @@
     <h2>Welcome, {{ user.username }}!</h2>
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Points:</strong> {{ user.userprofile.points }}</p> <!-- Display the points here -->
+    <ul>
+        <h2> Active products: </h2>
+        {% for product in products %}
+            {% if product.sold == False %}
+                <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
+                </div>
+                {{ product.name }}
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        <h2> Sold products: </h2>
+        {% for product in products %}
+            {% if product.sold %}
+                <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
+                </div>
+                {{ product.name }}
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        <h2> Bought products: </h2>
+        {% for product in boughtProducts %}
+            
+                <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
+                </div>
+                {{ product.name }}
+           
+        {% endfor %}
+    </ul>
+    
+
+
 </div>
 
 {% endblock %}
