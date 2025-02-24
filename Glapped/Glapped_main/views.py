@@ -15,9 +15,11 @@ def product_page(request, pk):
 def account(request):
     user = User.objects.get(username=request.user)
     products = Product.objects.filter(user=user)
+    activeProducts = products.filter(sold=False)
+    soldProducts = products.filter(sold=True)
     boughtProducts = Product.objects.filter(buyer=user)
 
-    return render(request, 'account.html', {"products": products, "boughtProducts": boughtProducts})
+    return render(request, 'account.html', {"products": products, "activeProducts": activeProducts, "boughtProducts": boughtProducts, "soldProducts": soldProducts})
 
 def search(request):
     query = request.GET.get('q','')
@@ -52,17 +54,27 @@ def leaderBoard(request):
 def buy(request, pk):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
-    if request.user == Product.objects.get(pk=pk).user:
+    
+    product = Product.objects.get(pk=pk)
+
+    if request.user == product.user:
         return HttpResponse("You can't buy your own product!")
-    if Product.objects.get(pk=pk).sold:
+    if product.sold:
         return HttpResponse("This product has already been sold!")
     if request.user.userprofile.points < Product.objects.get(pk=pk).price:
         return HttpResponse("You don't have enough points to buy this product!")
-    request.user.userprofile.points -= Product.objects.get(pk=pk).price
+    
 
-    product = Product.objects.get(pk=pk)
+    request.user.userprofile.points -= product.price #deduct points from buyer
+
+    product.user.userprofile.points += product.price #reward points to seller
+
     product.sold = True
     product.buyer = request.user
-    product.save()
+
+    product.user.userprofile.save()
     request.user.userprofile.save()
+
+    product.save()
+
     return HttpResponseRedirect("/")
