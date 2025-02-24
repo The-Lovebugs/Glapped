@@ -1,9 +1,16 @@
-{% extends "base.html" %}  
+{% extends "base.html" %}
 {% block content %}
-<div class="user-grid">
-    <h3>users,  points</h3>
+<div class="leaderboard-box">
+    <h3>Leaderboard</h3>
+    <div class="leaderboard-header">
+        <span class="column-title">User</span>
+        <span class="column-title">Points</span>
+    </div>
     {% for user in users %}
-    <p> {{ user.user }} {{ user.points}}</p>
-    {% endfor %}    
+    <div class="leaderboard-row">
+        <span class="username">{{ user.user }}</span>
+        <span class="points">{{ user.points }}</span>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

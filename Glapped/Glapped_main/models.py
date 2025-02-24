@@ -48,8 +48,8 @@ class Product(models.Model):
     ('accessories', 'Accessories'),
     ('misc', 'Miscellaneous')]
 
+    name = models.CharField(max_length=255, default='Product')
 
-    name = models.CharField(max_length=255)
     price = models.PositiveIntegerField(default=1)
     description = models.TextField()
     image = models.ImageField(upload_to='product_images', default='resources/default.jpg')
