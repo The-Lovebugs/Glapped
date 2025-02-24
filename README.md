@@ -8,7 +8,7 @@ Glapped Is an all-new vintage and second-hand fashion trading for your Campus. B
 
 The project can be built and ran using Python, we recommend version 3.13.2 and up.
   
-### Installing dependancies
+### Installing dependencies
 With python installed to path - 
 ```bash
   pip install django pillow crispy-bootstrap4
@@ -34,6 +34,13 @@ First, download the current source code and locate the installed folder. Then Ru
   cd glapped
   python manage.py runserver
 ```
+
+## Running Tests
+In order to run unit tests, makke sure you are in the installed project folder within a terminal, then run - 
+```bash
+  python manage.py test
+```
+
 
 ## Usage/Examples
 ### Creating an account
