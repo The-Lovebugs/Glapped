@@ -3,7 +3,7 @@
 Galpped Is an all-new vintage and second-hand fashion trading for your Campus. Built with the django framework it can be easily hosted and run to enable students of your university to trade clothing, as well as driving engagement for environmental causes on campus.
 ## Demo
 
-![Demo](https://i.imgur.com/QgItKDi.gif)
+![Demo](https://i.imgur.com/7ZbCpY5.gif)
 ## Installation
 
 The project can be built and ran using Python, we recommend version 3.13.2 and up.
