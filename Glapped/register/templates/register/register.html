@@ -7,7 +7,6 @@
         <form method="POST" class="custom-form">
             {% csrf_token %}
             
-            <!-- Display form errors here -->
             {% if form.errors %}
                 <div class="alert alert-danger">
                     <ul>
@@ -20,7 +19,6 @@
                 </div>
             {% endif %}
             
-            <!-- Display form fields using crispy -->
             {{ form|crispy }}
 
             <button type="submit" class="btn btn-success">Register</button>
