@@ -214,7 +214,7 @@ nav ul li a{
     text-align: center;
     font-weight: bold;
     color: #052204;
-    appearance: none; /* Removes default browser styling */
+    appearance: none;
 }
 
 .custom-form input:focus {
@@ -295,7 +295,7 @@ nav ul li a{
 
 .footer {
     display: flex;
-    justify-content: space-between; /* Aligns items to the left and right */
+    justify-content: space-between;
     align-items: center;
     padding: 10px;
     padding-left: 20px;
@@ -327,9 +327,6 @@ nav ul li a{
     margin: 10px 0;
 }
 
-/* Product page styling */
-
-/* Container for the entire product details */
 .product-container {
     display: flex;
     justify-content: center;
@@ -340,7 +337,7 @@ nav ul li a{
 
 .product-details {
     display: flex;
-    flex-direction: row; /* Align items in a row */
+    flex-direction: row;
     max-width: 800px;
     width: 100%;
     background-color: #fff;
@@ -349,10 +346,9 @@ nav ul li a{
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Left Section for Product Image */
 .product-image {
     flex: 1;
-    width: 300px; /* Control image size */
+    width: 300px;
     padding-right: 20px;
 }
 
@@ -362,17 +358,15 @@ nav ul li a{
     border-radius: 8px;
 }
 
-/* Right Section for Product Info (Title, Description, Price) */
 .product-info {
-    flex: 1; /* Take up space */
+    flex: 1;
     padding-left: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align content to the right */
-    text-align: center; /* Ensure text is also aligned to the right */
+    align-items: flex-start;
+    text-align: center;
 }
 
-/* Title Styling */
 .product-title {
     font-size: 2.5rem;
     color: #333;
@@ -380,7 +374,6 @@ nav ul li a{
     margin-bottom: 15px;
 }
 
-/* Description Styling */
 .description {
     font-size: 1.2rem;
     color: #555;
@@ -388,7 +381,6 @@ nav ul li a{
     margin-bottom: 20px;
 }
 
-/* Price Styling */
 .price {
     font-size: 1.5rem;
     font-weight: bold;
@@ -396,11 +388,9 @@ nav ul li a{
     margin-bottom: 20px;
 }
 
-/* Add to Cart Button */
 .product-actions {
     text-align: center;
     margin-top: 20px;
-    width: 100%; /* Make the button container take up full width */
 }
 
 .btn-buy {
@@ -444,7 +434,6 @@ nav ul li a{
     border-radius: 20px;
 }
 
-/* Style for the header row */
 .leaderboard-header {
     display: flex;
     justify-content: space-between;
@@ -455,7 +444,6 @@ nav ul li a{
     padding: 10px;
 }
 
-/* Each row */
 .leaderboard-row {
     display: flex;
     justify-content: space-between;
@@ -467,16 +455,31 @@ nav ul li a{
     font-weight: bold;
 }
 
-/* Style for username */
 .username {
     text-align: left;
     color: blanchedalmond;
     flex: 1;
 }
 
-/* Style for points */
 .points {
     text-align: right;
     color: blanchedalmond;
     flex: 1;
+}
+
+.location-text {
+    font-size: 16px;
+    color: #00a34c;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.location-text a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.location-text a:hover {
+    text-decoration: underline;
 }

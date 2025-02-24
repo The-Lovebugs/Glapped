@@ -5,4 +5,4 @@ class GlappedMainConfig(AppConfig):
     name = 'Glapped_main'
 
     def ready(self):
-        import register.signals  # This will load the signals from the 'register' app
+        import register.signals
