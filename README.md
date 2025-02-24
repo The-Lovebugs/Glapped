@@ -3,7 +3,7 @@
 Galpped Is an all-new vintage and second-hand fashion trading for your Campus. Built with the django framework it can be easily hosted and run to enable students of your university to trade clothing, as well as driving engagement for environmental causes on campus.
 ## Demo
 
-- record and add some demo giffs
+![Demo](https://i.imgur.com/QgItKDi.gif)
 ## Installation
 
 The project can be built and ran using Python, we recommend version 3.13.2 and up.
@@ -36,15 +36,25 @@ First, download the current source code and locate the installed folder. Then Ru
 ```
 
 ## Usage/Examples
-
 ### Creating an account
+![Register](https://i.imgur.com/fMlRktY.png)
+
 You can register account on the site, either via the join now button on the home page, or by heading to ```<hosted url>/register/``` 
 
 ### Navigating listings
+![Listings](https://i.imgur.com/c0DtoTy.png)
 Listings can be navigated via the homepage once logged in. To enter a listing, simply click on the the image and you'll be taken to its respective page.
 
+### Creating a listing
+![Listings](https://i.imgur.com/Tfl01Ku.png)
 
+In order to successfully create a listing, complete the required fields and provide an html5 compatible image.
 ## Administration
+![Listings](https://i.imgur.com/w7rL5pP.png)
+  
+  
+
+![Listings](https://i.imgur.com/iKc9gtx.png)
 The Admin panel can be found at ```<hosted url>/admin/```   
   
 In order to use an admin accuont, first create a super user via commandline. This can be done by performing the command -
