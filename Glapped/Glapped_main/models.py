@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 
@@ -52,7 +54,7 @@ class Product(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='product_images', default='resources/default.jpg')
     category = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def get_category_display(self):
-        print(dict(self.CATEGORY_CHOICES).get(self.category, self.category))
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
