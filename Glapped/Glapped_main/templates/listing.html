@@ -15,9 +15,12 @@
             <p class="description">{{ product.description }}</p>
             <p class="price">{{ product.price }} points</p>
 
+            <p class="category"><strong>Category:</strong> {{ product.get_category_display` }}</p>
+
+
             <!-- Add to Cart Button -->
             <div class="product-actions">
-                <button class="btn btn-add-to-cart">Buy now</button>
+                <button class="btn btn-buy">Buy now</button>
             </div>
         </div>
     </div>
