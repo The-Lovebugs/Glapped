@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from .models import Product
 from .forms import CreateNewListing
+from django.contrib.auth.models import User
+from register.models import UserProfile
 # Create your views here.
 def home(request):
     products = Product.objects.all()
@@ -29,3 +31,9 @@ def createListing(request):
         form = CreateNewListing()
 
     return render(request, 'createListing.html', {"form": form})
+
+
+def leaderBoard(request):
+    users = User.objects.all()
+    userProfiles = UserProfile.objects.all().order_by('points').reverse()
+    return render(request, 'leaderBoard.html', {"users": userProfiles})
