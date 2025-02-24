@@ -1,17 +1,23 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import UserProfile
+from .forms import RegisterForm
 
 # Create your tests here.
 class LogInTest(TestCase):
     def setUp(self):
         self.credentials = {
             'username': 'testuser',
-            'password': 'P455word!'}
-        self.client.post('/register/', self.credentials, follow=True)
+            'email': 'testuser@exeter.ac.uk',
+            'password1': 'P455w0rd9!',
+            'password2': 'P455w0rd9!'}
+        self.client.post('/register/', data=self.credentials, follow=True)
+    def test_register_form(self):
+        form = RegisterForm(data=self.credentials)
+        self.assertTrue(form.is_valid())
     def test_login(self):
         # send login data
-        response = self.client.post('/login/', self.credentials, follow=True)
+        response = self.client.post('/login/', data=self.credentials, follow=True)
         # should be logged in now
         self.assertTrue(response.context['user'].is_active)
     def test_account_created(self):
