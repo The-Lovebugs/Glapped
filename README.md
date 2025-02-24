@@ -36,7 +36,7 @@ First, download the current source code and locate the installed folder. Then Ru
 ```
 
 ## Running Tests
-In order to run unit tests, makke sure you are in the installed project folder within a terminal, then run - 
+In order to run unit tests, make sure you are in the installed project folder within a terminal, then run - 
 ```bash
   python manage.py test
 ```
@@ -64,7 +64,7 @@ In order to successfully create a listing, complete the required fields and prov
 ![Listings](https://i.imgur.com/iKc9gtx.png)
 The Admin panel can be found at ```<hosted url>/admin/```   
   
-In order to use an admin accuont, first create a super user via commandline. This can be done by performing the command -
+In order to use an admin account, first create a super user via commandline. This can be done by performing the command -
   
 ```bash
   python manage.py createsuperuser
