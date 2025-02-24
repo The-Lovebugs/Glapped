@@ -13,7 +13,16 @@ def product_page(request, pk):
     return render(request, 'listing.html', {'product': product})
 
 def account(request):
-    return render(request, 'account.html')
+    user = User.objects.get(username=request.user)
+    products = Product.objects.filter(user=user)
+    boughtProducts = Product.objects.filter(buyer=user)
+
+    return render(request, 'account.html', {"products": products, "boughtProducts": boughtProducts})
+
+def search(request):
+    query = request.GET.get('q','')
+    products = Product.objects.filter(name__icontains=query) if query else []
+    return render(request, 'search.html', {'products': products, 'query': query})
 
 def createListing(request):
     if request.method == "POST":
@@ -23,7 +32,9 @@ def createListing(request):
             description = form.cleaned_data["description"]
             price = form.cleaned_data["price"]
             image = form.cleaned_data["image"]
-            Product.objects.create(name=title, description=description, price=price, image=image)
+            category = form.cleaned_data["category"]
+            user = request.user
+            Product.objects.create(name=title, description=description, price=price, image=image, category=category, user=user)
             return HttpResponseRedirect("/")
         else:
             return HttpResponse("Invalid form")
@@ -37,3 +48,21 @@ def leaderBoard(request):
     users = User.objects.all()
     userProfiles = UserProfile.objects.all().order_by('points').reverse()
     return render(request, 'leaderBoard.html', {"users": userProfiles})
+
+def buy(request, pk):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/login")
+    if request.user == Product.objects.get(pk=pk).user:
+        return HttpResponse("You can't buy your own product!")
+    if Product.objects.get(pk=pk).sold:
+        return HttpResponse("This product has already been sold!")
+    if request.user.userprofile.points < Product.objects.get(pk=pk).price:
+        return HttpResponse("You don't have enough points to buy this product!")
+    request.user.userprofile.points -= Product.objects.get(pk=pk).price
+
+    product = Product.objects.get(pk=pk)
+    product.sold = True
+    product.buyer = request.user
+    product.save()
+    request.user.userprofile.save()
+    return HttpResponseRedirect("/")

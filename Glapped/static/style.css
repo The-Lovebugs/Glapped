@@ -78,7 +78,11 @@ nav ul li a{
 }
 
 .bgb-button{
+    outline: none;
+    border: none;
     margin-right: 20px;
+    outline: none;
+    border: none;
     display: inline-block;
     text-decoration: none;
     padding: 8px 14px;
@@ -134,7 +138,22 @@ nav ul li a{
     }
 }
 
+.search-button{
+    border: none;
+    outline: none;
+    display: inline-block;
+    text-decoration: none;
+    background: none;
+    color: #052204;
+    transition: 0.3s;
+}
+
+.search-button :hover{
+    color: blanchedalmond;
+}
+
 .custom-form label{
+    display: block;
     font-weight: bold;
     font-size: larger;
     color: #bafdb8;
@@ -184,6 +203,20 @@ nav ul li a{
     text-align: center;
     font-weight: bold;
     color: #052204;
+}
+
+.custom-form select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: blanchedalmond;
+    text-align: center;
+    font-weight: bold;
+    color: #052204;
+    appearance: none; /* Removes default browser styling */
 }
 
 .custom-form input:focus {
@@ -256,8 +289,8 @@ nav ul li a{
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Creates a responsive grid */
-    gap: 10px; /* Adds spacing between grid items */
+    grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
+    gap: 10px; 
     justify-content: center;
     padding: 20px;
 }
@@ -321,7 +354,7 @@ nav ul li a{
 /* Left Section for Product Image */
 .product-image {
     flex: 1;
-    max-width: 400px; /* Control image size */
+    width: 300px; /* Control image size */
     padding-right: 20px;
 }
 
@@ -333,11 +366,12 @@ nav ul li a{
 
 /* Right Section for Product Info (Title, Description, Price) */
 .product-info {
-    flex: 2; /* Take up twice the space of the image */
+    flex: 1; /* Take up space */
     padding-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: flex-start; /* Align content to the right */
+    text-align: center; /* Ensure text is also aligned to the right */
 }
 
 /* Title Styling */
@@ -371,7 +405,7 @@ nav ul li a{
     width: 100%; /* Make the button container take up full width */
 }
 
-.btn-add-to-cart {
+.btn-buy {
     display: inline-block;
     text-decoration: none;
     padding: 8px 14px;
@@ -383,7 +417,7 @@ nav ul li a{
     transition: 0.4s;
 }
 
-.btn-add-to-cart:hover{
+.btn-buy:hover{
     background-image: linear-gradient(45deg, #052204,#9be78b);
     color: rgb(255, 255, 255);
     transform: scale(0.97);

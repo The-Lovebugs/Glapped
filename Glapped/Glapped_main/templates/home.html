@@ -2,10 +2,12 @@
 {% block content %}
 <div class="product-grid">
     {% for product in products %}
+    {% if product.sold == False %}
     <a href="{% url 'product_page' product.pk %}">
         <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
         </div>
     </a>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
