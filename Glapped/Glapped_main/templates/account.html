@@ -39,9 +39,88 @@
             {% endfor %}
         {% endif %}
     </ul>
-    
 
-
+    <p id="message"></p>
+    <button id="open-in-maps" style="display: none;" onclick="openInMaps()">Open in Maps</button>
 </div>
+
+<script>
+    
+    function haversine(lat1, lon1, lat2, lon2) {
+        const R = 6371000;
+        const φ1 = lat1 * Math.PI / 180;
+        const φ2 = lat2 * Math.PI / 180;
+        const Δφ = (lat2 - lat1) * Math.PI / 180;
+        const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                  Math.cos(φ1) * Math.cos(φ2) *
+                  Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        const distance = R * c;
+        return distance;
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+
+                    const targetLat = 50.73521448860303;
+                    const targetLon = -3.5342376690066466;
+
+                    const distance = haversine(lat, lon, targetLat, targetLon);
+
+                    const messageElement = document.getElementById("message");
+
+                    if (distance <= 500) {
+                        messageElement.innerHTML = `You are within 500 meters of the target location!`;
+                        messageElement.style.color = "green";
+                    } else {
+                        messageElement.innerHTML = `You are approximately ${distance.toFixed(2)} meters away from the target location.`;
+                        messageElement.style.color = "red";
+                    }
+
+                    document.getElementById("open-in-maps").style.display = "block";
+
+                    window.user_lat = lat;
+                    window.user_lon = lon;
+                    
+                    let mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    let locationElement = document.createElement("p");
+                    locationElement.className = "location-text";
+                    locationElement.innerHTML = 
+                        `Latitude: ${lat} <br> Longitude: ${lon} <br> 
+                        <a href="${mapUrl}" target="_blank">View on Map</a>`;
+                    
+                    document.body.appendChild(locationElement);
+                },
+                function (error) {
+                    console.error("Error getting location:", error);
+                    const messageElement = document.getElementById("message");
+                    messageElement.innerHTML = "Unable to retrieve location. Please allow location access.";
+                    messageElement.style.color = "red";
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            const messageElement = document.getElementById("message");
+            messageElement.innerHTML = "Geolocation is not supported by this browser.";
+            messageElement.style.color = "red";
+        }
+    }
+
+    function openInMaps() {
+        const lat = window.user_lat;
+        const lon = window.user_lon;
+        const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+        window.open(mapUrl, '_blank');
+    }
+
+    window.onload = getLocation;
+</script>
 
 {% endblock %}
