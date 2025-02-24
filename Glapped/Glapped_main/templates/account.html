@@ -77,10 +77,10 @@
                     const messageElement = document.getElementById("message");
 
                     if (distance <= 500) {
-                        messageElement.innerHTML = `You are within 500 meters of the target location!`;
+                        messageElement.innerHTML = `You are nearby the Forum!`;
                         messageElement.style.color = "green";
                     } else {
-                        messageElement.innerHTML = `You are approximately ${distance.toFixed(2)} meters away from the target location.`;
+                        messageElement.innerHTML = `You are approximately ${distance.toFixed(2)} meters away from the Forum! Please go to the Forum to facilitate the exchange!`;
                         messageElement.style.color = "red";
                     }
 
