@@ -16,10 +16,11 @@
             <p class="category"><strong>Category:</strong> {{ product.get_category_display }}</p>
             <p class="user"><strong>User:</strong> {{ product.user }}</p>
 
+            {% if not product.sold %}
             <div class="product-actions">
-
                 <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
