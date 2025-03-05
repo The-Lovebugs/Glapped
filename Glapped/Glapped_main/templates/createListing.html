@@ -1,11 +1,17 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %} 
 {% block content %}
-<div class="custom-form-container">
+
+<div class="listing-type-toggle-buttons">
+    <button type="button" onclick="showForm('buy_now')">Create Buy Now Listing</button>
+    <button type="button" onclick="showForm('auction')">Create Auction Listing</button>
+</div>
+
+<div id="buy_now" class="custom-form-container">    
     <form method="post" class="custom-form" action="/createlisting/" enctype ="multipart/form-data">
         {% csrf_token %}
         
         <div class="custom-form-entry">
-            <label for="id_title">Title:</label>
+            <label for="id_title">Buy Now Title:</label>
             {{ form.title }}
         </div>
         
@@ -14,11 +20,6 @@
             {{ form.description }}
         </div>
         
-        <div class="custom-form-entry">
-            <label for="id_price">Price:</label>
-            {{ form.price }}
-        </div>
-
         <div class="custom-form-entry">
             <label for="id_category">Category:</label>
             {{ form.category }}
@@ -30,9 +31,67 @@
         </div>
 
         <div class="custom-form-entry">
+            <label for="id_price">Price:</label>
+            {{ form.price }}
+        </div>
+
+        <div class="custom-form-entry">
             <button type="submit">Create Listing</button>
         </div>
     </form>
 </div>
+
+<div id="auction" class="custom-form-container" style="display: none;">
+    <form method="post" class="custom-form" action="/createlisting/" enctype ="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="custom-form-entry">
+            <label for="id_title">Auction Title:</label>
+            {{ form.title }}
+        </div>
+        
+        <div class="custom-form-entry">
+            <label for="id_description">Description:</label>
+            {{ form.description }}
+        </div>
+
+        <div class="custom-form-entry">
+            <label for="id_category">Category:</label>
+            {{ form.category }}
+        </div>
+
+        <div class="custom-form-entry">
+            <label for="id_image">Image:</label>
+            {{ form.image }}
+        </div>
+        
+        <div class="custom-form-entry">
+            <label for="id_price">Starting price:</label>
+            {{ form.starting_bid }}
+        </div>
+
+        <div class="custom-form-entry">
+            <label for="id_auction_start_time">Auction Start Time:</label>
+            {{ form.start_time }}
+        </div>
+
+        <div class="custom-form-entry">
+            <label for="id_auction_end_time">Auction End Time:</label>
+            {{ form.end_time }}
+        </div>
+
+        <div class="custom-form-entry">
+            <button type="submit">Create Listing</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function showForm(formId) {
+        document.querySelectorAll('.custom-form-container').forEach(container => {container.style.display = 'none';});
+    
+        document.getElementById(formId).style.display = 'block';
+    }
+    </script>
 
 {% endblock %}
