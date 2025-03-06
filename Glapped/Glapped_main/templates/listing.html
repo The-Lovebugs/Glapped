@@ -11,17 +11,85 @@
             <h1 class="product-title">{{ product.name }}</h1>
 
             <p class="description">{{ product.description }}</p>
-            <p class="price">{{ product.price }} points</p>
-
             <p class="category"><strong>Category:</strong> {{ product.get_category_display }}</p>
             <p class="user"><strong>User:</strong> {{ product.user }}</p>
 
-            {% if not product.sold %}
-            <div class="product-actions">
-                <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
-            </div>
+            {% if product.sold %}
+                <p class="sold-status"><strong>Status:</strong> Sold</p>
+            {% else %}
+
+                {% if product.price is not None %}
+                    <!-- Buy Now Listing -->
+                    <p class="price">{{ product.price }} points</p>
+                    <div class="product-actions">
+                        <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
+                    </div>
+
+                {% elif product.starting_bid is not None %}
+                    <!-- Auction Listing -->
+                    <p><strong>Starting Bid:</strong> {{ product.starting_bid }} points</p>
+                    <p><strong>Current Highest Bid:</strong> 
+                        {% if product.current_highest_bid %}
+                            {{ product.current_highest_bid }} points
+                        {% else %}
+                            No bids yet
+                        {% endif %}
+                    </p>
+                    <p><strong>Auction Ends:</strong> {{ product.end_time }}</p>
+
+                    {% if product.end_time > now %}
+                        <form method="post" action="{% url 'place_bid' pk=product.pk %}" id="place-bid-form">
+                            {% csrf_token %}
+                            <input type="number" step="0.01" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
+                            <button type="submit" class="btn btn-bid">Place Bid</button>
+                        </form>
+                    {% else %}
+                        <p class="auction-ended">The auction has ended.</p>
+                    {% endif %}
+                {% endif %}
+
             {% endif %}
         </div>
     </div>
 </div>
+
+<!-- Hidden error message element to be checked by JavaScript -->
+<div id="error-message-container" style="display:none;">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Error Modal -->
+<div id="error-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p id="error-message"></p>
+    </div>
+</div>
+
+<script>
+    // Function to display the error modal
+    function showErrorModal(message) {
+        document.getElementById('error-message').textContent = message;
+        document.getElementById('error-modal').style.display = 'block';
+    }
+    
+    // Close the error modal
+    document.querySelector('.close-btn').onclick = function() {
+        document.getElementById('error-modal').style.display = 'none';
+    };
+
+    // Check if there is an error message in the hidden container
+    var errorMessageContainer = document.getElementById('error-message-container');
+    if (errorMessageContainer && errorMessageContainer.children.length > 0) {
+        var message = errorMessageContainer.children[0].textContent;
+        showErrorModal(message);
+    }
+</script>
+
 {% endblock %}

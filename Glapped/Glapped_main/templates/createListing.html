@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block title %} Home {% endblock %} 
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
 {% block content %}
 
 <div class="listing-type-toggle-buttons">
@@ -6,8 +7,9 @@
     <button type="button" onclick="showForm('auction')">Create Auction Listing</button>
 </div>
 
+<!-- Buy Now Form -->
 <div id="buy_now" class="custom-form-container">    
-    <form method="post" class="custom-form" action="/createlisting/" enctype ="multipart/form-data">
+    <form method="post" class="custom-form" action="/createlisting/" enctype="multipart/form-data">
         {% csrf_token %}
         
         <div class="custom-form-entry">
@@ -41,8 +43,9 @@
     </form>
 </div>
 
+<!-- Auction Form -->
 <div id="auction" class="custom-form-container" style="display: none;">
-    <form method="post" class="custom-form" action="/createlisting/" enctype ="multipart/form-data">
+    <form method="post" class="custom-form" action="/createlisting/" enctype="multipart/form-data">
         {% csrf_token %}
         
         <div class="custom-form-entry">
@@ -66,18 +69,14 @@
         </div>
         
         <div class="custom-form-entry">
-            <label for="id_price">Starting price:</label>
+            <label for="id_price">Starting Price:</label>
             {{ form.starting_bid }}
         </div>
 
+        <!-- Auction Length Field -->
         <div class="custom-form-entry">
-            <label for="id_auction_start_time">Auction Start Time:</label>
-            {{ form.start_time }}
-        </div>
-
-        <div class="custom-form-entry">
-            <label for="id_auction_end_time">Auction End Time:</label>
-            {{ form.end_time }}
+            <label for="id_auction_length">Auction Length (in days):</label>
+            {{ form.auction_length }}
         </div>
 
         <div class="custom-form-entry">
@@ -89,9 +88,8 @@
 <script>
     function showForm(formId) {
         document.querySelectorAll('.custom-form-container').forEach(container => {container.style.display = 'none';});
-    
         document.getElementById(formId).style.display = 'block';
     }
-    </script>
+</script>
 
 {% endblock %}

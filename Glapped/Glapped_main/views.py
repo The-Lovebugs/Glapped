@@ -1,20 +1,33 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from .models import Product, BuyNowProduct, AuctionProduct
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
 from register.models import UserProfile
 from django.contrib import messages
 from django.utils import timezone
-# Create your views here.
+from datetime import timedelta
 
 
 def home(request):
-    products = BuyNowProduct.objects.all()
-    return render(request, 'home.html', {"products": products})
+    buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
+    auction_products = AuctionProduct.objects.filter(end_time__gt=timezone.now())  # Only show active auctions
+
+    products = list(buy_now_products) + list(auction_products)  # Combine both to display on homepage
+
+    return render(request, "home.html", {"products": products})
+
 
 def product_page(request, pk):
-    product = BuyNowProduct.objects.get(pk=pk)
-    return render(request, 'listing.html', {'product': product})
+    product = BuyNowProduct.objects.filter(pk=pk).first()
+
+    if not product:
+        product = AuctionProduct.objects.filter(pk=pk).first()
+
+    if not product:
+        return render(request, '404.html', status=404)  # Show the custom 404 page
+
+    return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
+
 
 def account(request):
     user = User.objects.get(username=request.user)
@@ -25,10 +38,12 @@ def account(request):
 
     return render(request, 'account.html', {"products": products, "activeProducts": activeProducts, "boughtProducts": boughtProducts, "soldProducts": soldProducts})
 
+
 def search(request):
-    query = request.GET.get('q','')
+    query = request.GET.get('q', '')
     products = BuyNowProduct.objects.filter(name__icontains=query) if query else []
     return render(request, 'search.html', {'products': products, 'query': query})
+
 
 def createListing(request):
     if request.method == "POST":
@@ -39,11 +54,57 @@ def createListing(request):
             price = form.cleaned_data["price"]
             image = form.cleaned_data["image"]
             category = form.cleaned_data["category"]
+            starting_bid = form.cleaned_data["starting_bid"]
+            auction_length = form.cleaned_data.get("auction_length")  # Get the auction length (in days), default to None if not present
             user = request.user
-            BuyNowProduct.objects.create(name=title, description=description, price=price, image=image, category=category, user=user)
-            return HttpResponseRedirect("/")
+
+            # Create a BuyNowProduct if price is provided
+            if price:
+                BuyNowProduct.objects.create(
+                    name=title,
+                    description=description,
+                    category=category,
+                    image=image,
+                    price=price,
+                    user=user
+                )
+
+            # Create an AuctionProduct if starting_bid is provided
+            elif starting_bid:
+                if auction_length is None or auction_length == '':
+                    messages.error(request, "Please specify auction length.")  # Error if auction length is not provided for auctions
+                    return redirect('createListing')  # Redirect back to createListing form
+
+                try:
+                    auction_length = int(auction_length)  # Ensure auction_length is an integer
+                except ValueError:
+                    messages.error(request, "Invalid auction length. Please enter a valid number of days.")  # Handle invalid auction length
+                    return redirect('createListing')  # Redirect back to createListing form
+
+                # Set the start_time to the current time
+                start_time = timezone.now()
+
+                # Calculate the end_time based on auction_length (in days)
+                end_time = start_time + timedelta(days=auction_length)
+
+                AuctionProduct.objects.create(
+                    name=title,
+                    description=description,
+                    category=category,
+                    image=image,
+                    starting_bid=starting_bid,
+                    current_highest_bid=None,  # No bids at time of creation
+                    start_time=start_time,
+                    end_time=end_time,
+                    user=user
+                )
+
+            messages.success(request, "Listing created successfully!")  # Success message for successful listing creation
+            return HttpResponseRedirect("/")  # Redirect to homepage or success page
+
         else:
-            return HttpResponse("Invalid form")
+            messages.error(request, "Invalid form submission.")  # Error if form is not valid
+            return redirect('createListing')  # Redirect back to the form page
     else:
         form = CreateNewListing()
 
@@ -55,23 +116,28 @@ def leaderBoard(request):
     userProfiles = UserProfile.objects.all().order_by('points').reverse()
     return render(request, 'leaderBoard.html', {"users": userProfiles})
 
+
 def buy(request, pk):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
-    
+
     product = BuyNowProduct.objects.get(pk=pk)
 
     if request.user == product.user:
-        return HttpResponse("You can't buy your own product!")
+        messages.error(request, "You can't buy your own product!")
+        return redirect("product_page", pk=product.pk)
+
     if product.sold:
-        return HttpResponse("This product has already been sold!")
-    if request.user.userprofile.points < BuyNowProduct.objects.get(pk=pk).price:
-        return HttpResponse("You don't have enough points to buy this product!")
-    
+        messages.error(request, "This product has already been sold!")
+        return redirect("product_page", pk=product.pk)
 
-    request.user.userprofile.points -= product.price #deduct points from buyer
+    if request.user.userprofile.points < product.price:
+        messages.error(request, "You don't have enough points to buy this product!")
+        return redirect("product_page", pk=product.pk)
 
-    product.user.userprofile.points += product.price #reward points to seller
+    request.user.userprofile.points -= product.price  # Deduct points from buyer
+
+    product.user.userprofile.points += product.price  # Reward points to seller
 
     product.sold = True
     product.buyer = request.user
@@ -81,24 +147,36 @@ def buy(request, pk):
 
     product.save()
 
-    return HttpResponseRedirect("/")
+    messages.success(request, "Purchase successful!")  # Success message after purchase
+    return HttpResponseRedirect("/")  # Redirect to homepage
 
 
-
-def place_bid(request, auction_id):
-    auction = get_object_or_404(AuctionProduct, id=auction_id)
+def place_bid(request, pk):
+    auction = get_object_or_404(AuctionProduct, id=pk)
 
     if auction.end_time < timezone.now():
         messages.error(request, "This auction has already ended!")
-        return redirect("auction_detail", auction_id=auction.id)
-    
+        return redirect("product_page", pk=auction.id)
+
     bid_amount = request.POST.get("bid_amount")
 
     try:
         bid_amount = int(bid_amount)
-        auction.place_bid(request.user, bid_amount)
-        messages.success(request, "Your bid was successfully place!")
-    except ValueError as e:
-        messages.error(request, f"Error placing bid: {str(e)}")
 
-    return redirect("auction_detail", auction_id=auction.id)
+        # Check if bid amount is valid (greater than current highest bid or starting bid)
+        if bid_amount <= (auction.current_highest_bid or auction.starting_bid):
+            messages.error(request, "Your bid must be higher than the current highest bid!")
+        else:
+            auction.current_highest_bid = bid_amount
+            auction.current_highest_bidder = request.user
+            auction.save()
+            messages.success(request, "Your bid was successfully placed!")
+
+    except (ValueError, TypeError) as e:
+        messages.error(request, f"Invalid bid amount: {str(e)}")
+
+    return redirect("product_page", pk=auction.id)
+
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
