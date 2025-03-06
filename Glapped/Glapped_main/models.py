@@ -57,5 +57,6 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     sold = models.BooleanField(default=False)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='buyer')
+    #where count of reports will be
     def get_category_display(self):
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
