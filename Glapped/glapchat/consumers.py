@@ -5,6 +5,9 @@ from asgiref.sync import async_to_sync
 
 from channels.generic.websocket import WebsocketConsumer
 
+from .models import Message, Room
+from register.models import UserProfile
+from django.contrib.auth.models import User
 
 class GlapchatConsumer(WebsocketConsumer):
     def connect(self):
@@ -28,6 +31,11 @@ class GlapchatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
+        room = Room.objects.get(ID=self.room_name)
+        
+        user = User.objects.get(username=self.scope["user"])
+        
+        Message.objects.create(message=message, sender=user, room=room)
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(

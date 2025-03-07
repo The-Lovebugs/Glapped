@@ -3,6 +3,8 @@ from .models import Product
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
 from register.models import UserProfile
+
+from glapchat.models import Room
 # Create your views here.
 def home(request):
     products = Product.objects.all()
@@ -78,3 +80,16 @@ def buy(request, pk):
     product.save()
 
     return HttpResponseRedirect("/")
+
+
+def message(request, pk):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/login")
+    if request.user == Product.objects.get(pk=pk).user:
+        return HttpResponse("You can't message yourself!")
+    product = Product.objects.get(pk=pk)
+    existing_room = Room.objects.filter(user=request.user, seller=product.user, product=product).first()
+    if existing_room:
+        return HttpResponseRedirect("/glapchat/" + str(existing_room.ID))
+    room = Room.objects.create(user=request.user, seller=Product.objects.get(pk=pk).user, product=Product.objects.get(pk=pk))
+    return HttpResponseRedirect("/glapchat/" + str(room.ID))
