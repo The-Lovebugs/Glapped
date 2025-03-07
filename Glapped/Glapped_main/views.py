@@ -24,7 +24,7 @@ def product_page(request, pk):
         product = AuctionProduct.objects.filter(pk=pk).first()
 
     if not product:
-        return render(request, '404.html', status=404)  # Show the custom 404 page
+        return render(request, '404.html', status=404) # Show the custom 404 page
 
     return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
 
