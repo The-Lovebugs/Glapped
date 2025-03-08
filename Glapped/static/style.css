@@ -1,3 +1,13 @@
+:root{
+    --cream: #FFEBCD;
+    --dark_green: #052204;
+    --mid_green: #125227;
+    --light_green: #A9D4B7;
+    --lightest_green: #EEFFF3;
+    --light_grey: #D9D9D9;
+    --dark_grey: #797979;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -6,7 +16,7 @@
 }
 
 body {
-    background-color: blanchedalmond;
+    background-color: var(--cream);
     padding-bottom: 60px;
 }
 
@@ -22,7 +32,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #052204;
+    background-color: var(--dark_green);
 
 }
 .logo{
@@ -36,22 +46,18 @@ nav{
     align-items: center;
     padding: 14px;
     border-radius: 28px;
-    background: #125227;
+    background: var(--mid_green);
     width: 600px;
     transition: 0.5s;
 }
 
 .search:focus-within{
-    box-shadow: 0 0 8px rgb(28, 80, 23);
-}
-
-.search-icon{
-    color: #90af8a;
+    box-shadow: 0 0 8px var(--dark_grey);
 }
 
 .search-input{
     font-size: 16px;
-    color: blanchedalmond;
+    color: var(--cream);
     margin-left: 14px;
     font-weight: bolder;
     outline: none;
@@ -63,18 +69,18 @@ nav{
 nav ul li a{
     text-decoration: none;
     font-weight: bolder;
-    color:blanchedalmond;
+    color: var(--cream);
 }
 
 .login-button{
     font-weight: 700;
     text-decoration: none;
-    color: blanchedalmond;
+    color: var(--cream);
     margin-right: 15px;
 }
 
 .login-button:hover{
-    color: #fff;
+    color: var(--lightest_green);
 }
 
 .bgb-button{
@@ -84,8 +90,8 @@ nav ul li a{
     display: inline-block;
     text-decoration: none;
     padding: 8px 14px;
-    color: blanchedalmond;
-    background-image: linear-gradient(45deg, #052204,#70ad64);
+    color: var(--cream);
+    background-image: linear-gradient(45deg, var(--dark_green),var(--mid_green));
     font-size: 20px;
     font-weight: bolder;
     border-radius: 30px;
@@ -93,7 +99,7 @@ nav ul li a{
 }
 
 .bgb-button:hover{
-    background-image: linear-gradient(45deg, #052204,#9be78b);
+    background-image: linear-gradient(45deg, var(--dark_green),var(--light_green));
     color: rgb(255, 255, 255);
     transform: scale(0.90);
 }
