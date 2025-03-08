@@ -1,6 +1,7 @@
 :root{
     --cream: #FFEBCD;
     --dark_green: #052204;
+    --mid-dark_green: #2d6a4f;
     --mid_green: #125227;
     --light_green: #A9D4B7;
     --lightest_green: #EEFFF3;
@@ -100,7 +101,7 @@ nav ul li a{
 
 .bgb-button:hover{
     background-image: linear-gradient(45deg, var(--dark_green),var(--light_green));
-    color: rgb(255, 255, 255);
+    color: var(--lightest_green);
     transform: scale(0.90);
 }
 
@@ -113,12 +114,12 @@ nav ul li a{
 .homepage h1{
     font-size: 140px;
     font-weight: bolder;
-    color: #052204;
+    color: var(--dark_green);
 }
 
 .homepage p{
     font-weight: bolder;
-    color: #052204;
+    color: var(--dark_green);
     margin: 10px 0 30px;
 }
 
@@ -148,32 +149,32 @@ nav ul li a{
     display: inline-block;
     text-decoration: none;
     background: none;
-    color: #052204;
+    color: var(--dark_green);
     transition: 0.3s;
 }
 
 .search-button :hover{
-    color: blanchedalmond;
+    color: var(--cream);
 }
 
 .custom-form label{
     display: block;
     font-weight: bold;
     font-size: larger;
-    color: #bafdb8;
+    color: var(--light_green);
 }
 
 .custom-form-container {
-    background: #1b4d3e;
+    background: var(--mid_green);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 10px var(--dark_grey);
     text-align: center;
     margin:auto;
     width: 500px;
     align-self: center;
     margin-top: 5%;
-    color: #90af8a;
+    color: var(--light_green);
     font-weight: bold;
 }
 
@@ -191,7 +192,7 @@ nav ul li a{
 }
 
 .custom-form-container h2 {
-    color: blanchedalmond;
+    color: var(--cream);
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -203,10 +204,10 @@ nav ul li a{
     border: none;
     border-radius: 8px;
     font-size: 16px;
-    background: blanchedalmond;
+    background: var(--cream);
     text-align: center;
     font-weight: bold;
-    color: #052204;
+    color: var(--dark_green);
 }
 
 .custom-form select {
@@ -216,20 +217,20 @@ nav ul li a{
     border: none;
     border-radius: 8px;
     font-size: 16px;
-    background: blanchedalmond;
+    background: var(--cream);
     text-align: center;
     font-weight: bold;
-    color: #052204;
+    color: var(--dark_green);
     appearance: none;
 }
 
 .custom-form input:focus {
-    outline: 2px solid  #b2dfdb;
+    outline: 2px solid  var(--lightest_green);
 }
 
 .custom-form button {
-    background: #2d6a4f;
-    color: blanchedalmond;
+    background: var(--mid-dark_green);
+    color: var(--cream);
     font-weight: bold;
     padding: 12px;
     border: none;
@@ -241,22 +242,22 @@ nav ul li a{
 }
 
 .custom-form button:hover {
-    background: #155734;
-    color: white;
+    background: var(--light_green);
+    color: var(--lightest_green);
 }
 
 .custom-form p {
     margin-top: 15px;
-    color: blanchedalmond;
+    color: var(--cream);
     font-weight: bold;
     font-size: small;
 }
 
-.custom-form a {
+.custom-form a { 
     display: inline-block;
     text-decoration: none;
-    color: blanchedalmond;
-    background-color: #2d6a4f;
+    color: var(--cream);
+    background-color: var(--mid-dark_green);
     font-weight: bolder;
     border-radius: 8px;
     padding: 10px 8px;
@@ -265,17 +266,17 @@ nav ul li a{
 
 
 .custom-form a:hover {
-    background-color: #155734;
-    color: white;
+    background-color: var(--light_green);
+    color: var(--lightest_green);
 }
 
 .custom-form input:-webkit-autofill,
 .custom-form input:-webkit-autofill:hover,
 .custom-form input:-webkit-autofill:focus,
 .custom-form input:-webkit-autofill:active {
-    background: blanchedalmond !important;
-    -webkit-box-shadow: 0 0 0px 1000px blanchedalmond inset !important;
-    -webkit-text-fill-color: #052204 !important;
+    background: var(--cream) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--cream) inset !important;
+    -webkit-text-fill-color: var(--dark_green) !important;
 }
 .product-preview {
     width: 250px;
@@ -305,9 +306,9 @@ nav ul li a{
     align-items: center;
     padding: 10px;
     padding-left: 20px;
-    background-color: #052204;
+    background-color: var(--dark_green);
     font-size: 16px;
-    color: #ffffff;
+    color: var(--cream);
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -318,14 +319,14 @@ nav ul li a{
     max-width: 500px;
     margin: 50px auto;
     padding: 20px;
-    background: #f8f9fa;
+    background: var(--lightest_green);
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--dark_grey);
     text-align: center;
 }
 
 .account-container h2 {
-    color: #28a745;
+    color: var(--light_green);
 }
 
 .account-container p {
@@ -346,10 +347,10 @@ nav ul li a{
     flex-direction: row;
     max-width: 800px;
     width: 100%;
-    background-color: #fff;
+    background-color: var(--lightest_green);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--dark_grey);
 }
 
 .product-image {
@@ -375,14 +376,14 @@ nav ul li a{
 
 .product-title {
     font-size: 2.5rem;
-    color: #333;
+    color: var(--dark_green);
     font-weight: bold;
     margin-bottom: 15px;
 }
 
 .description {
     font-size: 1.2rem;
-    color: #555;
+    color: var(--dark_grey);
     line-height: 1.5;
     margin-bottom: 20px;
 }
@@ -390,7 +391,7 @@ nav ul li a{
 .price {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #28a745;
+    color: var(--mid-dark_green);
     margin-bottom: 20px;
 }
 
@@ -399,42 +400,24 @@ nav ul li a{
     margin-top: 20px;
 }
 
-.btn-buy {
-    display: inline-block;
-    text-decoration: none;
-    padding: 8px 14px;
-    color: blanchedalmond;
-    background-image: linear-gradient(45deg, #0a4608,#70ad64);
-    font-size: 20px;
-    font-weight: bolder;
-    border-radius: 30px;
-    transition: 0.4s;
-}
-
-.btn-buy:hover{
-    background-image: linear-gradient(45deg, #052204,#9be78b);
-    color: rgb(255, 255, 255);
-    transform: scale(0.97);
-}
-
 .leaderboard-box {
-    background: #1b4d3e;
+    background: var(--mid_green);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 10px var(--dark_grey);
     text-align: center;
     margin: auto;
     width: 500px;
     margin-top: 5%;
-    color: #90af8a;
+    color: var(--mid-dark_green);
     font-weight: bold;
 }
 
 .leaderboard-box h3 {
-    background-color: blanchedalmond;
+    background-color: var(--cream);
     text-decoration: none;
     padding: 8px 14px;
-    color: #1b4d3e;
+    color: var(--mid-dark_green);
     font-size: 22px;
     font-weight: bolder;
     border-radius: 20px;
@@ -445,7 +428,7 @@ nav ul li a{
     justify-content: space-between;
     font-size: 18px;
     font-weight: bold;
-    color: blanchedalmond;
+    color: var(--cream);
     margin-bottom: 10px;
     padding: 10px;
 }
@@ -453,7 +436,7 @@ nav ul li a{
 .leaderboard-row {
     display: flex;
     justify-content: space-between;
-    background-color: #639273;
+    background-color: var(--mid-dark_green);
     margin-top: 10px;
     padding: 8px 14px;
     border-radius: 20px;
@@ -463,19 +446,19 @@ nav ul li a{
 
 .username {
     text-align: left;
-    color: blanchedalmond;
+    color: var(--cream);
     flex: 1;
 }
 
 .points {
     text-align: right;
-    color: blanchedalmond;
+    color: var(--cream);
     flex: 1;
 }
 
 .location-text {
     font-size: 16px;
-    color: #00a34c;
+    color: var(--light_green);
     padding: 10px;
     margin-top: 20px;
     border-radius: 5px;
