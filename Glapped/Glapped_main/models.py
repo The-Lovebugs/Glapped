@@ -69,7 +69,7 @@ class AuctionProduct(Product):
     auction_length = models.PositiveIntegerField(default=1) # Auction length in days
     end_time = models.DateTimeField() # End time will be calculated based on the auction length
 
-    starting_bid = models.PositiveIntegerField(default=1)
+    starting_bid = models.PositiveIntegerField()
     current_highest_bid = models.PositiveIntegerField(null=True, blank=True)
     current_highest_bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='highest_bidder')
 
@@ -77,9 +77,10 @@ class AuctionProduct(Product):
     winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='winner')
 
     def save(self, *args, **kwargs):
-        # Calculate end time based on auction length in days
-        self.end_time = self.start_time + timedelta(days=self.auction_length)
+        if not self.end_time:  # Only calculate end_time if it's not already set
+            self.end_time = self.start_time + timedelta(days=self.auction_length)
         super(AuctionProduct, self).save(*args, **kwargs)
+
 
     def place_bid(self, user, bid_amount):
         # Check that the new bid is higher than the current bid

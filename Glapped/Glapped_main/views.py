@@ -85,7 +85,10 @@ def createListing(request):
                 start_time = timezone.now()
 
                 # Calculate the end_time based on auction_length (in days)
+                print("Start time:", start_time)
+                print("Auction length:", auction_length)
                 end_time = start_time + timedelta(days=auction_length)
+                print("End time:", end_time)
 
                 AuctionProduct.objects.create(
                     name=title,
@@ -154,6 +157,12 @@ def buy(request, pk):
 def place_bid(request, pk):
     auction = get_object_or_404(AuctionProduct, id=pk)
 
+    # Prevent bidding on own auction
+    if request.user == auction.user:
+        messages.error(request, "You cannot bid on your own listing!")
+        return redirect("product_page", pk=auction.id)
+
+    # Ensure auction is still active
     if auction.end_time < timezone.now():
         messages.error(request, "This auction has already ended!")
         return redirect("product_page", pk=auction.id)
@@ -163,19 +172,38 @@ def place_bid(request, pk):
     try:
         bid_amount = int(bid_amount)
 
-        # Check if bid amount is valid (greater than current highest bid or starting bid)
+        # Check if user has enough available points
+        user_profile = request.user.userprofile
+        if bid_amount > user_profile.points:
+            messages.error(request, "You do not have enough points to place this bid!")
+            return redirect("product_page", pk=auction.id)
+
+        # Ensure bid is higher than current highest bid or starting bid
         if bid_amount <= (auction.current_highest_bid or auction.starting_bid):
             messages.error(request, "Your bid must be higher than the current highest bid!")
-        else:
-            auction.current_highest_bid = bid_amount
-            auction.current_highest_bidder = request.user
-            auction.save()
-            messages.success(request, "Your bid was successfully placed!")
+            return redirect("product_page", pk=auction.id)
 
-    except (ValueError, TypeError) as e:
-        messages.error(request, f"Invalid bid amount: {str(e)}")
+        # Deduct bid amount from available points
+        user_profile.points -= bid_amount
+        user_profile.save()
+
+        # Refund previous highest bidder (if there was one)
+        if auction.current_highest_bidder:
+            auction.current_highest_bidder.userprofile.points += auction.current_highest_bid
+            auction.current_highest_bidder.userprofile.save()
+
+        # Update auction with new highest bid and bidder
+        auction.current_highest_bid = bid_amount
+        auction.current_highest_bidder = request.user
+        auction.save()
+
+        messages.success(request, "Your bid was successfully placed!")
+
+    except (ValueError, TypeError):
+        messages.error(request, "Invalid bid amount. Please enter a valid number.")
 
     return redirect("product_page", pk=auction.id)
+
 
 
 def custom_404(request, exception):
