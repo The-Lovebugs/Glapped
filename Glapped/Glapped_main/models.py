@@ -60,3 +60,12 @@ class Product(models.Model):
     #where count of reports will be
     def get_category_display(self):
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
+    
+class listingReport(models.Model):
+    REPORT_CATEGORY = [("Inappropriate conduct"),("Misleading content"),("Fraudulent behaviour"),("Fake listing"),("User safety")]
+    
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    listing = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    reportCategory = models.CharField(max_length=255)
+    description = models.TextField()
+    
