@@ -70,10 +70,11 @@ class CreateNewListing(forms.Form):
         required=False
     )
     
-    # Auction length field (1 to 7 days)
-    auction_length = forms.ChoiceField(
+    # Days 1-7 for auction length
+    auction_length = forms.TypedChoiceField(
         label="Auction Length (Days)", 
-        choices=[(str(i), str(i)) for i in range(1, 8)], 
+        choices=[(i, str(i)) for i in range(1, 8)], 
+        coerce=int,  # Ensures value is stored as an integer
         required=False
     )
 
