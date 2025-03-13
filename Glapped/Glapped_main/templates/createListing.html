@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
 {% block content %}
-<div class="listing-form-container">
-    <form method="post" class="listing-form" action="/createlisting/" enctype="multipart/form-data">
+
+<div class="listing-type-toggle-buttons">
+    <button type="button" onclick="showForm('buy_now')">Create Buy Now Listing</button>
+    <button type="button" onclick="showForm('auction')">Create Auction Listing</button>
+</div>
+<div id='buy_now' class="listing-form-container" style="display: none;">
+    <form method="post"  class="listing-form" action="/createlisting/" enctype="multipart/form-data">
         {% csrf_token %}
         
         <!-- Left Side: Form Fields -->
@@ -30,9 +35,46 @@
         </div>
     </form>
 </div>
+    <!-- Auction Form -->
+<div id='auction' class="listing-form-container" style="display: none;">
+    <form method="post" class="listing-form" action="/createlisting/" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="custom-form-content">
+            <label for="id_title">Auction Title:</label>
+            {{ form.title }}
+     
+            <label for="id_description">Description:</label>
+            {{ form.description }}
+
+            <label for="id_category">Category:</label>
+            {{ form.category }}
+
+            <label for="id_image">Image:</label>
+            {{ form.image }}
+   
+            <label for="id_price">Starting Price:</label>
+            {{ form.starting_bid }}
+        
+        <!-- Auction Length Field -->
+            <label for="id_auction_length">Auction Length (in days):</label>
+            {{ form.auction_length }}
+        </div>
+
+        <div class="listing-form-preview">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+            <button type="submit">Create Listing</button>
+        </div>
+    </form>
+</div>
 
 
 <script>
+    function showForm(formId) {
+        document.querySelectorAll('.listing-form-container').forEach(container => {container.style.display = 'none';});
+        document.getElementById(formId).style.display = 'block';
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         const imageInput = document.querySelector("#id_image");
         const imagePreview = document.querySelector("#imagePreview");
