@@ -11,18 +11,133 @@
             <h1 class="product-title">{{ product.name }}</h1>
 
             <p class="description">{{ product.description }}</p>
-            <p class="price">{{ product.price }} points</p>
-
             <p class="category"><strong>Category:</strong> {{ product.get_category_display }}</p>
             <p class="user"><strong>User:</strong> {{ product.user }}</p>
 
-            {% if not product.sold %}
-            <div class="product-actions">
+            {% if product.sold %}
+                <p class="sold-status"><strong>Status:</strong> Sold</p>
+            {% else %}
 
-                <a class="btn bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
-            </div>
+                {% if product.price is not None %}
+                    <!-- Buy Now Listing -->
+                    <p class="price">{{ product.price }} points</p>
+                    <div class="product-actions">
+                        <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
+                    </div>
+
+                {% elif product.starting_bid is not None %}
+                    <!-- Auction Listing -->
+                    <p><strong>Starting Bid:</strong> {{ product.starting_bid }} points</p>
+                    <p><strong>Current Highest Bid:</strong> 
+                        {% if product.current_highest_bid %}
+                            {{ product.current_highest_bid }} points
+                        {% else %}
+                            No bids yet
+                        {% endif %}
+                    </p>
+
+                    {% if product.end_time %}
+                        <p id="countdown"></p>
+                        
+                        <script>
+                            function updateCountdown() {
+                                // Get the end time from Django - convert to JavaScript Date format
+                                const endTime = new Date("{{ product.end_time|date:'Y-m-d H:i:s' }} UTC").getTime();
+
+                                function calculateTimeLeft() {
+                                    const now = new Date().getTime();
+                                    const timeLeft = endTime - now;
+
+                                    if (timeLeft <= 0) {
+                                        document.getElementById("countdown").innerHTML = "Auction ended";
+                                        clearInterval(countdownInterval);
+                                        return;
+                                    }
+
+                                    // Calculate days, hours, minutes, and seconds
+                                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                                    let displayTime = "";
+                                    if (days > 0) {
+                                        displayTime = `Auction ends: ${days} days, ${hours} hours`;
+                                    } else if (hours > 0) {
+                                        displayTime = `Auction ends: ${hours} hours, ${minutes} minutes`;
+                                    } else if (minutes > 0) {
+                                        displayTime = `Auction ends: ${minutes} minutes, ${seconds} seconds`;
+                                    } else {
+                                        displayTime = `Auction ends: ${seconds} seconds`;
+                                    }
+
+                                    document.getElementById("countdown").innerHTML = displayTime;
+                                }
+
+                                // Run immediately to avoid initial delay
+                                calculateTimeLeft();
+                                
+                                // Update every second
+                                const countdownInterval = setInterval(calculateTimeLeft, 1000);
+                            }
+
+                            updateCountdown();
+                        </script>
+                    {% endif %}
+
+                    {% if product.end_time > now %}
+                        <form method="post" action="{% url 'place_bid' pk=product.pk %}" id="place-bid-form">
+                            {% csrf_token %}
+                            <input type="number" step="0.01" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
+                            <button type="submit" class="btn btn-bid">Place Bid</button>
+                        </form>
+                    {% else %}
+                        <p class="auction-ended">The auction has ended.</p>
+                    {% endif %}
+                {% endif %}
+
             {% endif %}
         </div>
     </div>
 </div>
+
+<!-- Hidden error message element to be checked by JavaScript -->
+<div id="error-message-container" style="display:none;">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Error Modal -->
+<div id="error-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p id="error-message"></p>
+    </div>
+</div>
+
+<script>
+    // Function to display the error modal
+    function showErrorModal(message) {
+        document.getElementById('error-message').textContent = message;
+        document.getElementById('error-modal').style.display = 'block';
+    }
+    
+    // Close the error modal
+    document.querySelector('.close-btn').onclick = function() {
+        document.getElementById('error-modal').style.display = 'none';
+    };
+
+    // Check if there is an error message in the hidden container
+    var errorMessageContainer = document.getElementById('error-message-container');
+    if (errorMessageContainer && errorMessageContainer.children.length > 0) {
+        var message = errorMessageContainer.children[0].textContent;
+        showErrorModal(message);
+    }
+</script>
+
 {% endblock %}
