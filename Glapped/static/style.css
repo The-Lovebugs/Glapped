@@ -473,38 +473,136 @@ nav ul li a{
     text-decoration: underline;
 }
 
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%;
-    overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.4); 
+
+.listing-form label{
+    display: block;
+    font-weight: bold;
+    font-size: larger;
+    color: var(--light_green);
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; 
-    max-width: 400px;
+.listing-form-container {
+    background: var(--mid_green);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px var(--dark_grey);
+    text-align: center;
+    margin: auto;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    margin-top: 5%;
+    color: var(--light_green);
     font-weight: bold;
 }
 
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+.listing-form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
 }
 
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-    text-decoration: none;
+.listing-form-content {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds spacing between fields */
+}
+
+.listing-form-container div{
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.listing-form-container li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    list-style: none;
+}
+
+.listing-form-container h2 {
+    color: var(--cream);
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.listing-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--cream);
+    text-align: center;
+    font-weight: bold;
+    color: var(--dark_green);
+}
+
+.listing-form select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--cream);
+    text-align: center;
+    font-weight: bold;
+    color: var(--dark_green);
+    appearance: none;
+}
+
+.listing-form input:focus {
+    outline: 2px solid  var(--lightest_green);
+}
+
+.listing-form button {
+    background: var(--mid-dark_green);
+    color: var(--cream);
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 18px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.listing-form button:hover {
+    background: var(--light_green);
+    color: var(--lightest_green);
+}
+
+.listing-form-preview {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.listing-form-preview img {
+    width: 250px;
+    height: 300px;
+    border-radius: 12px;
+    margin-bottom: 50px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.listing-form input:-webkit-autofill,
+.listing-form input:-webkit-autofill:hover,
+.listing-form input:-webkit-autofill:focus,
+.listing-form input:-webkit-autofill:active {
+    background: var(--cream) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--cream) inset !important;
+    -webkit-text-fill-color: var(--dark_green) !important;
 }
