@@ -48,66 +48,67 @@ def search(request):
 def createListing(request):
     if request.method == "POST":
         form = CreateNewListing(request.POST, request.FILES)
+
         if form.is_valid():
             title = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
-            price = form.cleaned_data["price"]
+            price = form.cleaned_data.get("price")
             image = form.cleaned_data["image"]
             category = form.cleaned_data["category"]
-            starting_bid = form.cleaned_data["starting_bid"]
-            auction_length = form.cleaned_data.get("auction_length")  # Get the auction length (in days), default to None if not present
+            starting_bid = form.cleaned_data.get("starting_bid")
+            auction_length = form.cleaned_data.get("auction_length")
             user = request.user
 
-            # Create a BuyNowProduct if price is provided
+            # Handle Buy Now products
             if price:
+                starting_bid = None  # Ensure no auction-related fields for Buy Now
+                auction_length = None
+
                 BuyNowProduct.objects.create(
                     name=title,
                     description=description,
                     category=category,
                     image=image,
                     price=price,
-                    user=user
+                    user=user,
+                    sold=False,
+                    buyer=None
                 )
 
-            # Create an AuctionProduct if starting_bid is provided
+            # Handle Auction products
             elif starting_bid:
-                if auction_length is None or auction_length == '':
-                    messages.error(request, "Please specify auction length.")  # Error if auction length is not provided for auctions
-                    return redirect('createListing')  # Redirect back to createListing form
-
+                price = None
                 try:
-                    auction_length = int(auction_length)  # Ensure auction_length is an integer
-                except ValueError:
-                    messages.error(request, "Invalid auction length. Please enter a valid number of days.")  # Handle invalid auction length
-                    return redirect('createListing')  # Redirect back to createListing form
+                    auction_length = int(auction_length)  # Convert to integer
+                except (ValueError, TypeError):
+                    messages.error(request, "Invalid auction length. Please enter a valid number of days.")
+                    return redirect('createListing')
 
-                # Set the start_time to the current time
+                # Set the start and end times
                 start_time = timezone.now()
-
-                # Calculate the end_time based on auction_length (in days)
-                print("Start time:", start_time)
-                print("Auction length:", auction_length)
                 end_time = start_time + timedelta(days=auction_length)
-                print("End time:", end_time)
 
+                # Create AuctionProduct with auction_length
                 AuctionProduct.objects.create(
                     name=title,
                     description=description,
                     category=category,
                     image=image,
                     starting_bid=starting_bid,
-                    current_highest_bid=None,  # No bids at time of creation
+                    current_highest_bid=None,
                     start_time=start_time,
                     end_time=end_time,
-                    user=user
+                    user=user,
+                    auction_length=auction_length
                 )
 
-            messages.success(request, "Listing created successfully!")  # Success message for successful listing creation
-            return HttpResponseRedirect("/")  # Redirect to homepage or success page
+            messages.success(request, "Listing created successfully!")
+            return HttpResponseRedirect("/")  # Redirect to homepage
 
         else:
-            messages.error(request, "Invalid form submission.")  # Error if form is not valid
-            return redirect('createListing')  # Redirect back to the form page
+            messages.error(request, "Invalid form submission.")
+            return redirect('createListing')
+
     else:
         form = CreateNewListing()
 

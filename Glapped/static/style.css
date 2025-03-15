@@ -278,7 +278,9 @@ nav ul li a{
     -webkit-box-shadow: 0 0 0px 1000px var(--cream) inset !important;
     -webkit-text-fill-color: var(--dark_green) !important;
 }
+
 .product-preview {
+    position: relative; /* Allows absolute positioning for child elements */
     width: 250px;
     height: 300px;
     border-radius: 12px;
@@ -286,19 +288,39 @@ nav ul li a{
     background-position: center;
     background-repeat: no-repeat;
     transition: 0.3s;
+    display: flex;
+    align-items: flex-end; /* Aligns content to the bottom */
+    justify-content: center; /* Centers horizontally */
+    overflow: hidden; /* Ensures no overflow issues */
 }
 
-.product-preview:hover{
+.product-preview:hover {
     transform: scale(1.02);
 }
 
+/* The label at the bottom of the image */
+.product-label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6); /* Dark background for contrast */
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 0 0 12px 12px; /* Rounded corners only at the bottom */
+}
+
+/* Grid Layout */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
-    gap: 10px; 
+    gap: 10px;
     justify-content: center;
     padding: 20px;
 }
+
 
 .footer {
     display: flex;
@@ -605,4 +627,34 @@ nav ul li a{
     background: var(--cream) !important;
     -webkit-box-shadow: 0 0 0px 1000px var(--cream) inset !important;
     -webkit-text-fill-color: var(--dark_green) !important;
+}
+
+.listing-type-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.listing-type-toggle button {
+    width: 150px;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: var(--mid_green);
+    color: var(--cream);
+    transition: background 0.3s ease;
+}
+
+.listing-type-toggle button:hover {
+    background: var(--light_green);
+    color: var(--dark_green);
+}
+
+.listing-type-toggle button.active {
+    background: var(--mid-dark_green);
+    color: var(--cream);
 }

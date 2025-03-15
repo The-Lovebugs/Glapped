@@ -84,14 +84,17 @@ class CreateNewListing(forms.Form):
         starting_bid = cleaned_data.get("starting_bid")
         auction_length = cleaned_data.get("auction_length")
 
-        # Validation
+        # Ensure at least one of price or starting_bid is provided
         if not price and not starting_bid:
             raise forms.ValidationError("You must provide either a price (for Buy Now) or a starting bid (for Auction)!")
 
-        if price and (starting_bid or auction_length):
-            raise forms.ValidationError("Cannot provide auction-related fields for a Buy Now listing!")
+        # If price is provided, make sure auction-related fields are not present
+        #if price and (starting_bid or auction_length):
+            #raise forms.ValidationError("Cannot provide auction-related fields for a Buy Now listing!")
 
+        # If starting_bid is provided, make sure auction_length is also provided
         if starting_bid and not auction_length:
             raise forms.ValidationError("Auction listings must have an auction length!")
 
         return cleaned_data
+

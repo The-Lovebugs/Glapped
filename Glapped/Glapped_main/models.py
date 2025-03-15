@@ -66,8 +66,8 @@ class BuyNowProduct(Product):
 class AuctionProduct(Product):
     # Automatically set the start time to the current time
     start_time = models.DateTimeField(default=now) # Start time is automatically set to the current time
-    auction_length = models.PositiveIntegerField(default=1) # Auction length in days
-    end_time = models.DateTimeField() # End time will be calculated based on the auction length
+    auction_length = models.PositiveIntegerField(null=False, blank=False) # Auction length in days
+    end_time = models.DateTimeField() # End time is calculated based on the auction length
 
     starting_bid = models.PositiveIntegerField()
     current_highest_bid = models.PositiveIntegerField(null=True, blank=True)
