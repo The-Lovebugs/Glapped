@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-c#3$55tcqeguc&2_rh(8&nf-pkg6^=%d#(+!_%hrr$-+fifk24
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'localhost',
+                 '13.53.183.171',
+                 'glapped.store',
+                 ]
 
 
 # Application definition
