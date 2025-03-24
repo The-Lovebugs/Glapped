@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
 from .models import Product, BuyNowProduct, AuctionProduct
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
@@ -6,6 +6,10 @@ from register.models import UserProfile
 from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
+from django.core.handlers.wsgi import WSGIRequest
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from itertools import chain
 from django.db.models import Q
 import random
@@ -13,23 +17,47 @@ import random
 from .models import CATEGORY_SAVINGS
 
 
-def home(request):
-    buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
-    auction_products = AuctionProduct.objects.filter(end_time__gt=timezone.now())  # Only show active auctions
 
-    products = list(buy_now_products) + list(auction_products)  # Combine both to display on homepage
+def home(request:WSGIRequest) -> HttpResponse:
+    '''
+    Function to render the generic home page, loads all
+    products from the database.
+    '''
+    
+    # Only show unsold buy now products
+    buy_now_products = BuyNowProduct.objects.filter(
+        sold=False
+        )
+    
+    # Only show active auctions
+    auction_products = AuctionProduct.objects.filter(
+        end_time__gt=timezone.now()
+        ) 
+
+    # Combine both to display on homepage
+    products = list(buy_now_products) + list(auction_products)  
     random.shuffle(products)
 
-    return render(request, "home.html", {"products": products})
+    return render(
+        request,
+        "home.html",
+        {"products": products}
+        )
 
 
-def product_page(request, pk):
+def product_page(request:WSGIRequest, pk) -> HttpResponse:
+    '''
+    Function to render an individual product page.
+    Loads data via a product key
+    '''
     product = BuyNowProduct.objects.filter(pk=pk).first()
 
     if not product:
         product = AuctionProduct.objects.filter(pk=pk).first()
 
+     # Show the 404 page if the product can't be found
     if not product:
+
         return render(request, '404.html', status=404) # Show the custom 404 page
 
     return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
@@ -87,6 +115,9 @@ def search(request):
 
 
 def createListing(request):
+    '''
+    Method to generate a new listing from user input
+    '''
     if request.method == "POST":
         form = CreateNewListing(request.POST, request.FILES)
 
@@ -99,6 +130,46 @@ def createListing(request):
             starting_bid = form.cleaned_data.get("starting_bid")
             auction_length = form.cleaned_data.get("auction_length")
             user = request.user
+
+            # Process and resize the image if it exists
+            if image:
+                try:
+                    # Open the uploaded image
+                    img = Image.open(image)
+                    
+                    # Set maximum dimensions (adjust as needed)
+                    max_width = 500
+                    max_height = 600
+                    
+                    # Resize if necessary while maintaining aspect ratio
+                    if img.width > max_width or img.height > max_height:
+                        img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
+                        
+                        # Convert to BytesIO buffer
+                        output = BytesIO()
+                        
+                        # Save resized image (adjust format as needed)
+                        if img.format == 'JPEG':
+                            img.save(output, format='JPEG', quality=85)
+                        elif img.format == 'PNG':
+                            img.save(output, format='PNG', optimize=True)
+                        else:
+                            img.save(output, format='JPEG', quality=85)
+                            
+                        output.seek(0)
+                        
+                        # Create a new InMemoryUploadedFile
+                        image = InMemoryUploadedFile(
+                            output,
+                            'ImageField',
+                            f"{image.name.split('.')[0]}_resized.{img.format.lower()}",
+                            f'image/{img.format.lower()}',
+                            output.tell(),
+                            None
+                        )
+                except Exception as e:
+                    messages.error(request, f"Error processing image: {str(e)}")
+                    return redirect('createListing')
 
             # Handle Buy Now products
             if price:
@@ -155,16 +226,19 @@ def createListing(request):
 
     return render(request, 'createListing.html', {"form": form})
 
+def leaderBoard(request:WSGIRequest) -> HttpResponse:
+    '''
+    Render the leaderboard webpage
+    '''
+    users = User.objects.all()
+    userProfiles = UserProfile.objects.all().order_by('points').reverse()
+    return render(request, 'leaderBoard.html', {"users": userProfiles})
 
-def leaderBoard(request):
-    users_co2 = UserProfile.objects.order_by('-co2_saved')[:10]  # Top 10 for CO2
-    users_water = UserProfile.objects.order_by('-water_saved')[:10]  # Top 10 for water
-    return render(request, 'leaderBoard.html', {"users_co2": users_co2, "users_water": users_water})
 
-
-
-
-def buy(request, pk):
+def buy(request:WSGIRequest, pk: int) -> HttpResponseRedirect:
+    '''
+    Handles the purchase of a BuyNowProduct
+    '''
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
 
@@ -189,24 +263,20 @@ def buy(request, pk):
     product.sold = True
     product.buyer = request.user
 
-    # Update water and CO2 savings
-    savings = CATEGORY_SAVINGS.get(product.category, CATEGORY_SAVINGS['misc'])
-    request.user.userprofile.water_saved += savings['water']
-    request.user.userprofile.co2_saved += savings['co2']
-
-
     product.user.userprofile.save()
     request.user.userprofile.save()
 
     product.save()
 
-    messages.success(request, f"Purchase successful! You saved {savings['water']} litres of water and {savings['co2']} kg of CO₂!")  # Success message after purchase
+    messages.success(request, "Purchase successful!")  # Success message after purchase
     return HttpResponseRedirect("/")  # Redirect to homepage
 
 
-def place_bid(request, pk):
+def place_bid(request: WSGIRequest, pk: int) -> HttpResponseRedirect:
+    '''
+    Handles bidding on an auctions
+    '''
     auction = get_object_or_404(AuctionProduct, id=pk)
-
     # Prevent bidding on own auction
     if request.user == auction.user:
         messages.error(request, "You cannot bid on your own listing!")
@@ -256,5 +326,8 @@ def place_bid(request, pk):
 
 
 
-def custom_404(request, exception):
+def custom_404(request:WSGIRequest, exception) -> HttpResponse:
+    '''
+    error page
+    '''
     return render(request, '404.html', status=404)
