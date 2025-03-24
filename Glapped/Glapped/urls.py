@@ -11,6 +11,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', register, name='register'),
+    path('', include('django.contrib.auth.urls')),
+    path('glapchat/', include('glapchat.urls')),
     path('', include('Glapped_main.urls')),
     path('', include('django.contrib.auth.urls')),  # Authentication URLs (login, logout, etc.)
     path('terms_and_conditions/', TemplateView.as_view(template_name='terms_and_conditions.html'), name='terms_and_conditions'),

@@ -1,8 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
+from http.client import HTTPResponse
 from .models import Product, BuyNowProduct, AuctionProduct
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
 from register.models import UserProfile
+
+from glapchat.models import Room
+# Create your views here.
 from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
@@ -272,10 +276,21 @@ def buy(request:WSGIRequest, pk: int) -> HttpResponseRedirect:
     return HttpResponseRedirect("/")  # Redirect to homepage
 
 
-def place_bid(request: WSGIRequest, pk: int) -> HttpResponseRedirect:
-    '''
-    Handles bidding on an auctions
-    '''
+def message(request, pk):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/login")
+    if request.user == Product.objects.get(pk=pk).user:
+        return HTTPResponse("You can't message yourself!")
+    product = Product.objects.get(pk=pk)
+    existing_room = Room.objects.filter(user=request.user, seller=product.user, product=product).first()
+    if existing_room:
+        return HttpResponseRedirect("/glapchat/" + str(existing_room.ID))
+    room = Room.objects.create(user=request.user, seller=Product.objects.get(pk=pk).user, product=Product.objects.get(pk=pk))
+    return HttpResponseRedirect("/glapchat/" + str(room.ID))
+    
+
+
+def place_bid(request, pk):
     auction = get_object_or_404(AuctionProduct, id=pk)
     # Prevent bidding on own auction
     if request.user == auction.user:
