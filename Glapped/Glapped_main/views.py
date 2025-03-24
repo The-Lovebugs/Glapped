@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 from itertools import chain
+import random
 
 from .models import CATEGORY_SAVINGS
 
@@ -16,6 +17,7 @@ def home(request):
     auction_products = AuctionProduct.objects.filter(end_time__gt=timezone.now())  # Only show active auctions
 
     products = list(buy_now_products) + list(auction_products)  # Combine both to display on homepage
+    random.shuffle(products)
 
     return render(request, "home.html", {"products": products})
 
