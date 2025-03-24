@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <div class="leaderboards-container">
     <!-- CO₂ Leaderboard -->
     <div class="leaderboard-box">
-        <h3>🏆 CO₂ Saved Leaderboard</h3>
         <div class="leaderboard-header">
+            <div class="leaderboard-title">
+                <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                <h3>CO₂ Saved Leaderboard</h3>
+            </div>
+        </div>
+        <div class="leaderboard-header-row">
             <span class="column-title">User</span>
             <span class="column-title">CO₂ Saved (kg)</span>
         </div>
@@ -18,8 +24,13 @@
 
     <!-- Water Leaderboard -->
     <div class="leaderboard-box">
-        <h3>💧 Water Saved Leaderboard</h3>
         <div class="leaderboard-header">
+            <div class="leaderboard-title">
+                <img src="{% static 'water.png' %}" alt="Water Icon" class="leaderboard-icon">
+                <h3>Water Saved Leaderboard</h3>
+            </div>
+        </div>
+        <div class="leaderboard-header-row">
             <span class="column-title">User</span>
             <span class="column-title">Water Saved (L)</span>
         </div>

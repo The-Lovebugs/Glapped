@@ -425,8 +425,23 @@ nav ul li a{
 .leaderboards-container {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 0px;
     flex-wrap: wrap;
+}
+
+.leaderboard-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.leaderboard-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    background-color: var(--cream);
+    padding: 5px;
 }
 
 .leaderboard-box {
@@ -443,7 +458,6 @@ nav ul li a{
 }
 
 .leaderboard-box h3 {
-    background-color: var(--cream);
     text-decoration: none;
     padding: 8px 14px;
     color: var(--mid-dark_green);
@@ -454,7 +468,8 @@ nav ul li a{
 
 .leaderboard-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     font-size: 18px;
     font-weight: bold;
     color: var(--cream);
