@@ -10,6 +10,12 @@ from django.core.handlers.wsgi import WSGIRequest
 from io import BytesIO
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from itertools import chain
+from django.db.models import Q
+import random
+
+from .models import CATEGORY_SAVINGS
+
 
 
 def home(request:WSGIRequest) -> HttpResponse:
@@ -30,6 +36,7 @@ def home(request:WSGIRequest) -> HttpResponse:
 
     # Combine both to display on homepage
     products = list(buy_now_products) + list(auction_products)  
+    random.shuffle(products)
 
     return render(
         request,
@@ -50,61 +57,62 @@ def product_page(request:WSGIRequest, pk) -> HttpResponse:
 
      # Show the 404 page if the product can't be found
     if not product:
-        return render(
-            request,
-            '404.html',
-            status=404
-            )
 
-    return render(
-        request, 
-        'listing.html', 
-        {'product': product,
-         'now': timezone.now()
-         }
+        return render(request, '404.html', status=404) # Show the custom 404 page
+
+    return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
+
+
+def account(request):
+    user = User.objects.get(username=request.user)
+
+
+    # Active Products (unsold BuyNow and ongoing Auctions)
+    active_buy_now = BuyNowProduct.objects.filter(user=user, sold=False)
+    active_auctions = AuctionProduct.objects.filter(user=user, end_time__gt=timezone.now(), sold=False)
+    active_products = list(chain(active_buy_now, active_auctions))
+
+    # Sold Products (completed BuyNow and Auctions sold)
+    sold_buy_now = BuyNowProduct.objects.filter(user=user, sold=True)
+    sold_auctions = AuctionProduct.objects.filter(user=user, sold=True)
+    sold_products = list(chain(sold_buy_now, sold_auctions))
+
+    # Bought/Won Products (Bought via BuyNow, or Won via Auction)
+    bought_products = BuyNowProduct.objects.filter(buyer=user)
+    won_auctions = AuctionProduct.objects.filter(winner=user, sold=True)
+    bought_won_products = list(chain(bought_products, won_auctions))
+
+    return render(request, 'account.html', {"activeProducts": active_products, "boughtProducts": bought_products, "soldProducts": sold_products})
+
+
+def search(request):
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        # Search for name, description, and category fields
+        buy_now_products = BuyNowProduct.objects.filter(
+            Q(sold=False) &
+            (Q(name__icontains=query) |
+             Q(description__icontains=query) |
+             Q(category__icontains=query))
         )
 
-
-def account(request:WSGIRequest) -> HttpResponse:
-    '''
-    Function to render the account page
-    loads sold and purchased products
-    '''
-    user = User.objects.get(
-        username=request.user
-        )
-    products = BuyNowProduct.objects.filter(
-        user=user)
-    activeProducts = products.filter(sold=False)
-    soldProducts = products.filter(sold=True)
-    boughtProducts = BuyNowProduct.objects.filter(buyer=user)
-
-    return render(
-        request,
-        'account.html',
-        {"products": products,
-         "activeProducts": activeProducts,
-         "boughtProducts": boughtProducts,
-         "soldProducts": soldProducts}
+        auction_products = AuctionProduct.objects.filter(
+            Q(end_time__gt=timezone.now()) &
+            (Q(name__icontains=query) |
+             Q(description__icontains=query) |
+             Q(category__icontains=query))
         )
 
+        # Combine results and shuffle
+        products = list(buy_now_products) + list(auction_products)
+        random.shuffle(products)
 
-def search(request:WSGIRequest) -> HttpResponse:
-    '''
-    Function to search the product database for
-    matching items.
-    '''
-    query = request.GET.get('q', '')
-    products = BuyNowProduct.objects.filter(
-        name__icontains=query
-        ) if query else []
-    
-    return render(
-        request,
-        'search.html',
-        {'products': products,
-         'query': query}
-        )
+    else:
+        products = []  # No search query provided, show no results
+
+    return render(request, 'search.html', {'products': products, 'query': query})
+
 
 def createListing(request):
     '''
