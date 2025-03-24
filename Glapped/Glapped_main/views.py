@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from .models import Product
 from .forms import CreateNewListing
+from .forms import ReportForm
 from django.contrib.auth.models import User
 from register.models import UserProfile
 # Create your views here.
@@ -78,3 +79,17 @@ def buy(request, pk):
     product.save()
 
     return HttpResponseRedirect("/")
+
+def report(request):
+    if request.method == "POST":
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            reason = form.cleaned_data["reason"]
+            link = form.cleaned_data["link"]
+            return HttpResponseRedirect("/")
+        else:
+            return HttpResponse("Invalid form")
+    else:
+        form = ReportForm()
+
+    return render(request, 'report.html', {"form": form})
