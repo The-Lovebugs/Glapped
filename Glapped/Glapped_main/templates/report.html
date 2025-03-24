@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %} Report {% endblock %}
 {% block content %}
 <div class="custom-form-container">
-    <form method="post" class="custom-form" action="/submitreport/" enctype ="multipart/form-data">
+    <form method="post" class="custom-form" action="/report/" enctype ="multipart/form-data">
         {% csrf_token %}
         
         <div class="custom-form-entry">

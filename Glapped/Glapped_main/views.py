@@ -51,19 +51,18 @@ def createReport(request, pk):
     if request.method == "POST" :
         form = ReportForm(request.POST, request.FILES)
         #needs to not allows the same user to report the same product multiple times
-        existingReports = ListingReport.objects.filter(reporter=request.user, product=product)
-        if form.is_valid() and not existingReports.exists():
+        existingReport = ListingReport.objects.filter(reporter=request.user, product=product)
+        if form.is_valid() and not existingReport.exists():
             reporter = request.user
-            #listing = request.listing 
             category  = form.cleaned_data['reason']
             description = form.cleaned_data['description']
-            ListingReport.objects.create(reporter=reporter,product=listing,category=category,description=description)
+            ListingReport.objects.create(reporter=reporter,product=product,category=category,description=description)
             return HttpResponseRedirect("/")
         else:
             return HttpResponse("Invalid form")
     else:
         form = ReportForm()
-    return render(request, 'report.html', {"form": form})
+    return render(request, 'report.html', {"form": form, "pk":pk})
 
 
 def leaderBoard(request):
