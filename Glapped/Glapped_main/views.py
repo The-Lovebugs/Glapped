@@ -1,12 +1,12 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
-from .models import Product
+from django.shortcuts import render, get_object_or_404,HttpResponse, HttpResponseRedirect
+from .models import Product, ListingReport
 from .forms import CreateNewListing
 from .forms import ReportForm
 from django.contrib.auth.models import User
 from register.models import UserProfile
 # Create your views here.
 def home(request):
-    products = Product.objects.all()
+    products = Product.objects.all().filter(reportAmount__lt=4)
     return render(request, 'home.html', {"products": products})
 
 def product_page(request, pk):
@@ -24,7 +24,7 @@ def account(request):
 
 def search(request):
     query = request.GET.get('q','')
-    products = Product.objects.filter(name__icontains=query) if query else []
+    products = Product.objects.filter(name__icontains=query, reportAmount__lt=4) if query else []
     return render(request, 'search.html', {'products': products, 'query': query})
 
 def createListing(request):
@@ -45,6 +45,25 @@ def createListing(request):
         form = CreateNewListing()
 
     return render(request, 'createListing.html', {"form": form})
+
+def createReport(request, pk):
+    product = Product.objects.get(pk=pk)
+    if request.method == "POST" :
+        form = ReportForm(request.POST, request.FILES)
+        #needs to not allows the same user to report the same product multiple times
+        existingReports = ListingReport.objects.filter(reporter=request.user, product=product)
+        if form.is_valid() and not existingReports.exists():
+            reporter = request.user
+            #listing = request.listing 
+            category  = form.cleaned_data['reason']
+            description = form.cleaned_data['description']
+            ListingReport.objects.create(reporter=reporter,product=listing,category=category,description=description)
+            return HttpResponseRedirect("/")
+        else:
+            return HttpResponse("Invalid form")
+    else:
+        form = ReportForm()
+    return render(request, 'report.html', {"form": form})
 
 
 def leaderBoard(request):
@@ -79,17 +98,3 @@ def buy(request, pk):
     product.save()
 
     return HttpResponseRedirect("/")
-
-def report(request):
-    if request.method == "POST":
-        form = ReportForm(request.POST)
-        if form.is_valid():
-            reason = form.cleaned_data["reason"]
-            link = form.cleaned_data["link"]
-            return HttpResponseRedirect("/")
-        else:
-            return HttpResponse("Invalid form")
-    else:
-        form = ReportForm()
-
-    return render(request, 'report.html', {"form": form})

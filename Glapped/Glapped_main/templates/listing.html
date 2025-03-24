@@ -21,6 +21,9 @@
                 <a class="btn btn-buy" href="{% url 'buy' product.pk %}">Buy now</a>
             </div>
             {% endif %}
+
+            <a href="{% url 'createReport' product.pk %}" class="btn btn-danger">Report this Listing</a>
+
         </div>
     </div>
 </div>

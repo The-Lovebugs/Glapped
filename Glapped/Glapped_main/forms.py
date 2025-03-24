@@ -73,7 +73,8 @@ class ReportForm(forms.Form):
         choices=REPORT_REASONS,
         required=True
     )
+    description = forms.CharField(label="Extra detail", max_length=1000)
     link = forms.URLField(
         label="Link to Listing/User Profile",
-        required=True
+        required=False
     )
