@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 from itertools import chain
+from django.db.models import Q
 import random
 
 from .models import CATEGORY_SAVINGS
@@ -57,8 +58,31 @@ def account(request):
 
 
 def search(request):
-    query = request.GET.get('q', '')
-    products = BuyNowProduct.objects.filter(name__icontains=query) if query else []
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        # Search for name, description, and category fields
+        buy_now_products = BuyNowProduct.objects.filter(
+            Q(sold=False) &
+            (Q(name__icontains=query) |
+             Q(description__icontains=query) |
+             Q(category__icontains=query))
+        )
+
+        auction_products = AuctionProduct.objects.filter(
+            Q(end_time__gt=timezone.now()) &
+            (Q(name__icontains=query) |
+             Q(description__icontains=query) |
+             Q(category__icontains=query))
+        )
+
+        # Combine results and shuffle
+        products = list(buy_now_products) + list(auction_products)
+        random.shuffle(products)
+
+    else:
+        products = []  # No search query provided, show no results
+
     return render(request, 'search.html', {'products': products, 'query': query})
 
 
