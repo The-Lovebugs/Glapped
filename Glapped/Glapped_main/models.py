@@ -126,7 +126,13 @@ class AuctionProduct(Product):
     def end_auction(self):
         if self.current_highest_bidder:
             self.winner = self.current_highest_bidder
+            self.sold = True
+            
+            # Award points to the seller
+            seller_profile = self.user.userprofile
+            seller_profile.points += self.current_highest_bid
+            seller_profile.save()
+
             self.save()
         else:
-            self.winner = None
-            self.save()
+            pass # No process if auction had no bids - it is just expired

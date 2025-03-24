@@ -77,12 +77,12 @@ def account(request):
     sold_auctions = AuctionProduct.objects.filter(user=user, sold=True)
     sold_products = list(chain(sold_buy_now, sold_auctions))
 
-    # Bought/Won Products (Bought via BuyNow, or Won via Auction)
+    # Bought/Won Products (Bought via BuyNow, or won via Auction)
     bought_products = BuyNowProduct.objects.filter(buyer=user)
-    won_auctions = AuctionProduct.objects.filter(winner=user, sold=True)
+    won_auctions = AuctionProduct.objects.filter(winner=user)
     bought_won_products = list(chain(bought_products, won_auctions))
 
-    return render(request, 'account.html', {"activeProducts": active_products, "boughtProducts": bought_products, "soldProducts": sold_products})
+    return render(request, 'account.html', {"activeProducts": active_products, "boughtProducts": bought_won_products, "soldProducts": sold_products})
 
 
 def search(request):

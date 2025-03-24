@@ -148,3 +148,15 @@ MEDIA_ROOT = BASE_DIR / "media"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# Celery scheduled tasks
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULE = {
+    'end-expired-auctions-every-minute': {
+        'task': 'Glapped_main.tasks.end_expired_auctions',
+        'schedule': 60.0,  # Run every minute
+    },
+}
+CELERY_TIMEZONE = 'UTC'
