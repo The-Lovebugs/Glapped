@@ -11,12 +11,14 @@
     <ul>
         {% if activeProducts %}
             <h2> Active listings: </h2>
-            {% for product in activeProducts %}
+            <div class="product-grid">
+                {% for product in activeProducts %}
                 <a href="/{{ product.id }}/">
                     <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
                     </div>
                 </a>
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% endif %}
     </ul>
     <ul>

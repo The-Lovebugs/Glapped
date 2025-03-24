@@ -6,6 +6,7 @@ from register.models import UserProfile
 from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
+from itertools import chain
 
 from .models import CATEGORY_SAVINGS
 
@@ -33,12 +34,24 @@ def product_page(request, pk):
 
 def account(request):
     user = User.objects.get(username=request.user)
-    products = BuyNowProduct.objects.filter(user=user)
-    activeProducts = products.filter(sold=False)
-    soldProducts = products.filter(sold=True)
-    boughtProducts = BuyNowProduct.objects.filter(buyer=user)
 
-    return render(request, 'account.html', {"products": products, "activeProducts": activeProducts, "boughtProducts": boughtProducts, "soldProducts": soldProducts})
+
+    # Active Products (unsold BuyNow and ongoing Auctions)
+    active_buy_now = BuyNowProduct.objects.filter(user=user, sold=False)
+    active_auctions = AuctionProduct.objects.filter(user=user, end_time__gt=timezone.now(), sold=False)
+    active_products = list(chain(active_buy_now, active_auctions))
+
+    # Sold Products (completed BuyNow and Auctions sold)
+    sold_buy_now = BuyNowProduct.objects.filter(user=user, sold=True)
+    sold_auctions = AuctionProduct.objects.filter(user=user, sold=True)
+    sold_products = list(chain(sold_buy_now, sold_auctions))
+
+    # Bought/Won Products (Bought via BuyNow, or Won via Auction)
+    bought_products = BuyNowProduct.objects.filter(buyer=user)
+    won_auctions = AuctionProduct.objects.filter(winner=user, sold=True)
+    bought_won_products = list(chain(bought_products, won_auctions))
+
+    return render(request, 'account.html', {"activeProducts": active_products, "boughtProducts": bought_products, "soldProducts": sold_products})
 
 
 def search(request):
