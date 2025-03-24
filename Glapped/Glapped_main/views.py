@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
 from .models import Product, BuyNowProduct, AuctionProduct
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
@@ -8,28 +8,64 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-def home(request):
-    buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
-    auction_products = AuctionProduct.objects.filter(end_time__gt=timezone.now())  # Only show active auctions
+def home(request) -> HttpResponse:
+    '''
+    Function to render the generic home page, loads all
+    products from the database.
+    '''
+    
+    # Only show unsold buy now products
+    buy_now_products = BuyNowProduct.objects.filter(
+        sold=False
+        )
+    
+    # Only show active auctions
+    auction_products = AuctionProduct.objects.filter(
+        end_time__gt=timezone.now()
+        ) 
 
-    products = list(buy_now_products) + list(auction_products)  # Combine both to display on homepage
+    # Combine both to display on homepage
+    products = list(buy_now_products) + list(auction_products)  
 
-    return render(request, "home.html", {"products": products})
+    return render(
+        request,
+        "home.html",
+        {"products": products}
+        )
 
 
-def product_page(request, pk):
+def product_page(request, pk) -> HttpResponse:
+    '''
+    Function to render an individual product page.
+    Loads data via a product key
+    '''
     product = BuyNowProduct.objects.filter(pk=pk).first()
 
     if not product:
         product = AuctionProduct.objects.filter(pk=pk).first()
 
+     # Show the 404 page if the product can't be found
     if not product:
-        return render(request, '404.html', status=404) # Show the custom 404 page
+        return render(
+            request,
+            '404.html',
+            status=404
+            )
 
-    return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
+    return render(
+        request, 
+        'listing.html', 
+        {'product': product,
+         'now': timezone.now()
+         }
+        )
 
 
-def account(request):
+def account(request) -> HttpResponse:
+    '''
+    Function to render the account page
+    loads sold and purchased products
+    '''
     user = User.objects.get(username=request.user)
     products = BuyNowProduct.objects.filter(user=user)
     activeProducts = products.filter(sold=False)
@@ -39,13 +75,13 @@ def account(request):
     return render(request, 'account.html', {"products": products, "activeProducts": activeProducts, "boughtProducts": boughtProducts, "soldProducts": soldProducts})
 
 
-def search(request):
+def search(request) -> HttpResponse:
     query = request.GET.get('q', '')
     products = BuyNowProduct.objects.filter(name__icontains=query) if query else []
     return render(request, 'search.html', {'products': products, 'query': query})
 
 
-def createListing(request):
+def createListing(request) -> HttpResponse:
     if request.method == "POST":
         form = CreateNewListing(request.POST, request.FILES)
 
@@ -115,13 +151,13 @@ def createListing(request):
     return render(request, 'createListing.html', {"form": form})
 
 
-def leaderBoard(request):
+def leaderBoard(request) -> HttpResponse:
     users = User.objects.all()
     userProfiles = UserProfile.objects.all().order_by('points').reverse()
     return render(request, 'leaderBoard.html', {"users": userProfiles})
 
 
-def buy(request, pk):
+def buy(request, pk) -> HttpResponseRedirect:
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
 
