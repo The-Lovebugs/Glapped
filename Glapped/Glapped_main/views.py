@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
 from .models import Product, BuyNowProduct, AuctionProduct
 from .forms import CreateNewListing
 from django.contrib.auth.models import User
@@ -6,50 +6,112 @@ from register.models import UserProfile
 from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
+from django.core.handlers.wsgi import WSGIRequest
 
-from .models import CATEGORY_SAVINGS
+def home(request:WSGIRequest) -> HttpResponse:
+    '''
+    Function to render the generic home page, loads all
+    products from the database.
+    '''
+    
+    # Only show unsold buy now products
+    buy_now_products = BuyNowProduct.objects.filter(
+        sold=False
+        )
+    
+    # Only show active auctions
+    auction_products = AuctionProduct.objects.filter(
+        end_time__gt=timezone.now()
+        ) 
+
+    # Combine both to display on homepage
+    products = list(buy_now_products) + list(auction_products)  
+
+    return render(
+        request,
+        "home.html",
+        {"products": products}
+        )
 
 
-def home(request):
-    buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
-    auction_products = AuctionProduct.objects.filter(end_time__gt=timezone.now())  # Only show active auctions
-
-    products = list(buy_now_products) + list(auction_products)  # Combine both to display on homepage
-
-    return render(request, "home.html", {"products": products})
-
-
-def product_page(request, pk):
+def product_page(request:WSGIRequest, pk) -> HttpResponse:
+    '''
+    Function to render an individual product page.
+    Loads data via a product key
+    '''
     product = BuyNowProduct.objects.filter(pk=pk).first()
 
     if not product:
         product = AuctionProduct.objects.filter(pk=pk).first()
 
+     # Show the 404 page if the product can't be found
     if not product:
-        return render(request, '404.html', status=404) # Show the custom 404 page
+        return render(
+            request,
+            '404.html',
+            status=404
+            )
 
-    return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
+    return render(
+        request, 
+        'listing.html', 
+        {'product': product,
+         'now': timezone.now()
+         }
+        )
 
 
-def account(request):
-    user = User.objects.get(username=request.user)
-    products = BuyNowProduct.objects.filter(user=user)
+def account(request:WSGIRequest) -> HttpResponse:
+    '''
+    Function to render the account page
+    loads sold and purchased products
+    '''
+    user = User.objects.get(
+        username=request.user
+        )
+    products = BuyNowProduct.objects.filter(
+        user=user)
     activeProducts = products.filter(sold=False)
     soldProducts = products.filter(sold=True)
     boughtProducts = BuyNowProduct.objects.filter(buyer=user)
 
-    return render(request, 'account.html', {"products": products, "activeProducts": activeProducts, "boughtProducts": boughtProducts, "soldProducts": soldProducts})
+    return render(
+        request,
+        'account.html',
+        {"products": products,
+         "activeProducts": activeProducts,
+         "boughtProducts": boughtProducts,
+         "soldProducts": soldProducts}
+        )
 
 
-def search(request):
+def search(request:WSGIRequest) -> HttpResponse:
+    '''
+    Function to search the product database for
+    matching items.
+    '''
     query = request.GET.get('q', '')
-    products = BuyNowProduct.objects.filter(name__icontains=query) if query else []
-    return render(request, 'search.html', {'products': products, 'query': query})
+    products = BuyNowProduct.objects.filter(
+        name__icontains=query
+        ) if query else []
+    
+    return render(
+        request,
+        'search.html',
+        {'products': products,
+         'query': query}
+        )
 
 
-def createListing(request):
+def createListing(request:WSGIRequest) -> HttpResponse:
+    '''
+    Handle the creation of a new product listing, either as a Buy Now product
+    or an Auction product.
+    '''
     if request.method == "POST":
-        form = CreateNewListing(request.POST, request.FILES)
+        form = CreateNewListing(
+            request.POST,
+            request.FILES)
 
         if form.is_valid():
             title = form.cleaned_data["title"]
@@ -117,15 +179,19 @@ def createListing(request):
     return render(request, 'createListing.html', {"form": form})
 
 
-def leaderBoard(request):
-    users_co2 = UserProfile.objects.order_by('-co2_saved')[:10]  # Top 10 for CO2
-    users_water = UserProfile.objects.order_by('-water_saved')[:10]  # Top 10 for water
-    return render(request, 'leaderBoard.html', {"users_co2": users_co2, "users_water": users_water})
+def leaderBoard(request:WSGIRequest) -> HttpResponse:
+    '''
+    Render the leaderboard webpage
+    '''
+    users = User.objects.all()
+    userProfiles = UserProfile.objects.all().order_by('points').reverse()
+    return render(request, 'leaderBoard.html', {"users": userProfiles})
 
 
-
-
-def buy(request, pk):
+def buy(request:WSGIRequest, pk: int) -> HttpResponseRedirect:
+    '''
+    Handles the purchase of a BuyNowProduct
+    '''
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
 
@@ -150,24 +216,20 @@ def buy(request, pk):
     product.sold = True
     product.buyer = request.user
 
-    # Update water and CO2 savings
-    savings = CATEGORY_SAVINGS.get(product.category, CATEGORY_SAVINGS['misc'])
-    request.user.userprofile.water_saved += savings['water']
-    request.user.userprofile.co2_saved += savings['co2']
-
-
     product.user.userprofile.save()
     request.user.userprofile.save()
 
     product.save()
 
-    messages.success(request, f"Purchase successful! You saved {savings['water']} litres of water and {savings['co2']} kg of CO₂!")  # Success message after purchase
+    messages.success(request, "Purchase successful!")  # Success message after purchase
     return HttpResponseRedirect("/")  # Redirect to homepage
 
 
-def place_bid(request, pk):
+def place_bid(request: WSGIRequest, pk: int) -> HttpResponseRedirect:
+    '''
+    Handles bidding on an auctions
+    '''
     auction = get_object_or_404(AuctionProduct, id=pk)
-
     # Prevent bidding on own auction
     if request.user == auction.user:
         messages.error(request, "You cannot bid on your own listing!")
@@ -217,5 +279,8 @@ def place_bid(request, pk):
 
 
 
-def custom_404(request, exception):
+def custom_404(request:WSGIRequest, exception) -> HttpResponse:
+    '''
+    error page
+    '''
     return render(request, '404.html', status=404)
