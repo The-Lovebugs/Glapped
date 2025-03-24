@@ -4,9 +4,9 @@
 
 {% block content %}
     <div class="custom-form-container">
-        <form method="POST" class="custom-form">
+        <form method="POST" class="custom-form" id="registration-form">
             {% csrf_token %}
-            
+
             {% if form.errors %}
                 <div class="alert alert-danger">
                     <ul>
@@ -18,10 +18,31 @@
                     </ul>
                 </div>
             {% endif %}
-            
+
             {{ form|crispy }}
+
+            <div class="terms-checkbox" style="display: flex; align-items: center; margin-top: 10px; white-space: nowrap;">
+                <label for="accept_terms" style="margin-right: 8px;">
+                    I accept the 
+                    <a href="{% url 'terms_and_conditions' %}" target="_blank"
+                       style="background:none; border:none; padding:0; color:#0066cc; text-decoration:underline;">
+                        terms and conditions
+                    </a>
+                </label>
+                <input type="checkbox" id="accept_terms">
+            </div>
 
             <button type="submit" class="btn btn-success">Register</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            const termsCheckbox = document.getElementById('accept_terms');
+            if (!termsCheckbox.checked) {
+                e.preventDefault(); 
+                alert('You must agree to the Terms and Conditions before registering.');
+            }
+        });
+    </script>
 {% endblock %}
