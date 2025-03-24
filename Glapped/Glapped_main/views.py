@@ -234,9 +234,9 @@ def leaderBoard(request:WSGIRequest) -> HttpResponse:
     '''
     Render the leaderboard webpage
     '''
-    users = User.objects.all()
-    userProfiles = UserProfile.objects.all().order_by('points').reverse()
-    return render(request, 'leaderBoard.html', {"users": userProfiles})
+    users_co2 = UserProfile.objects.order_by('-co2_saved')[:10]  # Top 10 for CO2
+    users_water = UserProfile.objects.order_by('-water_saved')[:10]  # Top 10 for water
+    return render(request, 'leaderBoard.html', {"users_co2": users_co2, "users_water": users_water})
 
 
 def buy(request:WSGIRequest, pk: int) -> HttpResponseRedirect:
