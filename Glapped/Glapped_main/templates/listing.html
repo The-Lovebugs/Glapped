@@ -24,6 +24,9 @@
                     <div class="product-actions">
                         <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
                     </div>
+                    <div class="product-actions">
+                        <a class="bgb-button" href="{% url 'message' product.pk %}">message</a>
+                    </div>
 
                 {% elif product.starting_bid is not None %}
                     <!-- Auction Listing -->
