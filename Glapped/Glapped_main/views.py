@@ -31,12 +31,14 @@ def home(request:WSGIRequest) -> HttpResponse:
     
     # Only show unsold buy now products
     buy_now_products = BuyNowProduct.objects.filter(
-        sold=False
+        sold=False,
+        reportAmount__lt=4
         )
     
     # Only show active auctions
     auction_products = AuctionProduct.objects.filter(
-        end_time__gt=timezone.now()
+        end_time__gt=timezone.now(),
+        reportAmount__lt=4
         ) 
 
     # Combine both to display on homepage
@@ -94,27 +96,29 @@ def search(request):
     query = request.GET.get('q', '').strip()
 
     if query:
-        # Search for name, description, and category fields
+        # Search for name, description, and category, and less than 4 reports
         buy_now_products = BuyNowProduct.objects.filter(
-            Q(sold=False) &
-            (Q(name__icontains=query) |
-             Q(description__icontains=query) |
-             Q(category__icontains=query))
+            Q(sold=False),
+            Q(reportAmount__lt=4),
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query)
         )
 
         auction_products = AuctionProduct.objects.filter(
-            Q(end_time__gt=timezone.now()) &
-            (Q(name__icontains=query) |
-             Q(description__icontains=query) |
-             Q(category__icontains=query))
+            Q(end_time__gt=timezone.now()),
+            Q(reportAmount__lt=4),
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query)
         )
 
-        # Combine results and shuffle
+        # Combine results and randomize
         products = list(buy_now_products) + list(auction_products)
         random.shuffle(products)
 
     else:
-        products = []  # No search query provided, show no results
+        products = []  # No query, return nothing
 
     return render(request, 'search.html', {'products': products, 'query': query})
 
