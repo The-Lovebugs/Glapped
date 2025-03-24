@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 
+from .models import CATEGORY_SAVINGS
+
 
 def home(request):
     buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
@@ -116,9 +118,11 @@ def createListing(request):
 
 
 def leaderBoard(request):
-    users = User.objects.all()
-    userProfiles = UserProfile.objects.all().order_by('points').reverse()
-    return render(request, 'leaderBoard.html', {"users": userProfiles})
+    users_co2 = UserProfile.objects.order_by('-co2_saved')[:10]  # Top 10 for CO2
+    users_water = UserProfile.objects.order_by('-water_saved')[:10]  # Top 10 for water
+    return render(request, 'leaderBoard.html', {"users_co2": users_co2, "users_water": users_water})
+
+
 
 
 def buy(request, pk):
@@ -146,12 +150,18 @@ def buy(request, pk):
     product.sold = True
     product.buyer = request.user
 
+    # Update water and CO2 savings
+    savings = CATEGORY_SAVINGS.get(product.category, CATEGORY_SAVINGS['misc'])
+    request.user.userprofile.water_saved += savings['water']
+    request.user.userprofile.co2_saved += savings['co2']
+
+
     product.user.userprofile.save()
     request.user.userprofile.save()
 
     product.save()
 
-    messages.success(request, "Purchase successful!")  # Success message after purchase
+    messages.success(request, f"Purchase successful! You saved {savings['water']} litres of water and {savings['co2']} kg of CO₂!")  # Success message after purchase
     return HttpResponseRedirect("/")  # Redirect to homepage
 
 

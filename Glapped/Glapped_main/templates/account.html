@@ -6,6 +6,8 @@
     <h2>Welcome, {{ user.username }}!</h2>
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Points:</strong> {{ user.userprofile.points }}</p>
+    <p><strong>Water Saved:</strong> {{ user.userprofile.water_saved }} litres</p>
+    <p><strong>CO₂ Saved:</strong> {{ user.userprofile.co2_saved }} kg</p>
     <ul>
         {% if activeProducts %}
             <h2> Active listings: </h2>
@@ -20,28 +22,33 @@
     <ul>
         {% if soldProducts %}
             <h2> Sold listings: </h2>
-            {% for product in soldProducts %}
+            <div class="product-grid">
+                {% for product in soldProducts %}
                 <a href="/{{ product.id }}/">
                     <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
                     </div>
                 </a>
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% endif %}
     </ul>
     <ul>
         {% if boughtProducts %}
             <h2> Purchased listings: </h2>
-            {% for product in boughtProducts %}
+            <div class="product-grid">
+                {% for product in boughtProducts %}
                 <a href="/{{ product.id }}/">
                     <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
                     </div>
                 </a>
-            {% endfor %}
+                {% endfor %}
+            </div>
+
         {% endif %}
     </ul>
 
     <p id="message"></p>
-    <button id="open-in-maps" style="display: none;" onclick="openInMaps()">Open in Maps</button>
+    <button class="bgb-button" id="open-in-maps" style="display: none; margin: 20px auto; display: block;" onclick="openInMaps()">Open in Maps</button>
 </div>
 
 <script>

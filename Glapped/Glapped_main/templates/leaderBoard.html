@@ -1,16 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="leaderboard-box">
-    <h3>Leaderboard</h3>
-    <div class="leaderboard-header">
-        <span class="column-title">User</span>
-        <span class="column-title">Points</span>
+<div class="leaderboards-container">
+    <!-- CO₂ Leaderboard -->
+    <div class="leaderboard-box">
+        <h3>🏆 CO₂ Saved Leaderboard</h3>
+        <div class="leaderboard-header">
+            <span class="column-title">User</span>
+            <span class="column-title">CO₂ Saved (kg)</span>
+        </div>
+        {% for user in users_co2 %}
+        <div class="leaderboard-row">
+            <span class="username">{{ user.user.username }}</span>
+            <span class="points">{{ user.co2_saved }}</span>
+        </div>
+        {% endfor %}
     </div>
-    {% for user in users %}
-    <div class="leaderboard-row">
-        <span class="username">{{ user.user }}</span>
-        <span class="points">{{ user.points }}</span>
+
+    <!-- Water Leaderboard -->
+    <div class="leaderboard-box">
+        <h3>💧 Water Saved Leaderboard</h3>
+        <div class="leaderboard-header">
+            <span class="column-title">User</span>
+            <span class="column-title">Water Saved (L)</span>
+        </div>
+        {% for user in users_water %}
+        <div class="leaderboard-row">
+            <span class="username">{{ user.user.username }}</span>
+            <span class="points">{{ user.water_saved }}</span>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

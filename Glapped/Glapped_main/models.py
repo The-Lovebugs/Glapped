@@ -55,6 +55,38 @@ class Product(models.Model):
 
     def get_category_display(self):
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
+    
+CATEGORY_SAVINGS = {
+    'tshirt': {'water': 2700, 'co2': 6},
+    'button_up': {'water': 3000, 'co2': 7},
+    'vest': {'water': 1800, 'co2': 4},
+    'sweater': {'water': 6000, 'co2': 20},
+    'hoodie': {'water': 8100, 'co2': 21},
+    'cardigan': {'water': 5500, 'co2': 18},
+    'denim_jacket': {'water': 9000, 'co2': 25},
+    'leather_jacket': {'water': 17000, 'co2': 45},
+    'winter_coat': {'water': 12000, 'co2': 30},
+    'blazer': {'water': 8000, 'co2': 22},
+    'jeans': {'water': 7600, 'co2': 33},
+    'cargo_trousers': {'water': 7000, 'co2': 28},
+    'suit_trousers': {'water': 6000, 'co2': 20},
+    'shorts': {'water': 4000, 'co2': 10},
+    'skirt': {'water': 3500, 'co2': 8},
+    'dress': {'water': 7000, 'co2': 25},
+    'trainers': {'water': 4400, 'co2': 15},
+    'leather_shoes': {'water': 8500, 'co2': 25},
+    'sandals': {'water': 2500, 'co2': 5},
+    'flip_flops': {'water': 1500, 'co2': 3},
+    'boots': {'water': 10000, 'co2': 30},
+    'hat': {'water': 1200, 'co2': 3},
+    'scarf': {'water': 1000, 'co2': 2},
+    'gloves': {'water': 2000, 'co2': 5},
+    'tie': {'water': 1500, 'co2': 4},
+    'jewelry': {'water': 800, 'co2': 2},
+    'sportswear': {'water': 3000, 'co2': 10},
+    'accessories': {'water': 1000, 'co2': 3},
+    'misc': {'water': 1000, 'co2': 5},  # fallback/default
+}
 
 
 class BuyNowProduct(Product):

@@ -338,7 +338,7 @@ nav ul li a{
 }
 
 .account-container {
-    max-width: 500px;
+    max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     background: var(--lightest_green);
@@ -420,6 +420,13 @@ nav ul li a{
 .product-actions {
     text-align: center;
     margin-top: 20px;
+}
+
+.leaderboards-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
 .leaderboard-box {
