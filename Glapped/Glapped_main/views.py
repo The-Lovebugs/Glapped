@@ -11,9 +11,6 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 
-from io import BytesIO
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
 def home(request):
     buy_now_products = BuyNowProduct.objects.filter(sold=False)  # Only show unsold buy now products
@@ -65,46 +62,6 @@ def createListing(request):
             starting_bid = form.cleaned_data.get("starting_bid")
             auction_length = form.cleaned_data.get("auction_length")
             user = request.user
-
-            # Process and resize the image if it exists
-            if image:
-                try:
-                    # Open the uploaded image
-                    img = Image.open(image)
-                    
-                    # Set maximum dimensions (adjust as needed)
-                    max_width = 500
-                    max_height = 600
-                    
-                    # Resize if necessary while maintaining aspect ratio
-                    if img.width > max_width or img.height > max_height:
-                        img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
-                        
-                        # Convert to BytesIO buffer
-                        output = BytesIO()
-                        
-                        # Save resized image (adjust format as needed)
-                        if img.format == 'JPEG':
-                            img.save(output, format='JPEG', quality=85)
-                        elif img.format == 'PNG':
-                            img.save(output, format='PNG', optimize=True)
-                        else:
-                            img.save(output, format='JPEG', quality=85)
-                            
-                        output.seek(0)
-                        
-                        # Create a new InMemoryUploadedFile
-                        image = InMemoryUploadedFile(
-                            output,
-                            'ImageField',
-                            f"{image.name.split('.')[0]}_resized.{img.format.lower()}",
-                            f'image/{img.format.lower()}',
-                            output.tell(),
-                            None
-                        )
-                except Exception as e:
-                    messages.error(request, f"Error processing image: {str(e)}")
-                    return redirect('createListing')
 
             # Handle Buy Now products
             if price:
@@ -160,6 +117,7 @@ def createListing(request):
         form = CreateNewListing()
 
     return render(request, 'createListing.html', {"form": form})
+
 
 def leaderBoard(request):
     users = User.objects.all()
