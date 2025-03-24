@@ -146,7 +146,7 @@ def createListing(request):
                     # Open the uploaded image
                     img = Image.open(image)
                     
-                    # Set maximum dimensions (adjust as needed)
+                    # Set maximum dimensions
                     max_width = 500
                     max_height = 600
                     
