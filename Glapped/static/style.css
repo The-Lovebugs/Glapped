@@ -477,6 +477,10 @@ nav ul li a{
     padding: 10px;
 }
 
+.leaderboard-header-row {
+    color: var(--light_green);
+}
+
 .leaderboard-row {
     display: flex;
     justify-content: space-between;

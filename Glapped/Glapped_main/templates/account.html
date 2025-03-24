@@ -99,9 +99,7 @@
                     let mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
                     let locationElement = document.createElement("p");
                     locationElement.className = "location-text";
-                    locationElement.innerHTML = 
-                        `Latitude: ${lat} <br> Longitude: ${lon} <br> 
-                        <a href="${mapUrl}" target="_blank">View on Map</a>`;
+                
                     
                     document.body.appendChild(locationElement);
                 },
