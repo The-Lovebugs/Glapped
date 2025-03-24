@@ -1,7 +1,8 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
+from django.shortcuts import render, get_object_or_404,HttpResponseRedirect, get_object_or_404, redirect,HttpResponse
 from http.client import HTTPResponse
-from .models import Product, BuyNowProduct, AuctionProduct
+from .models import Product, BuyNowProduct, AuctionProduct, ListingReport
 from .forms import CreateNewListing
+from .forms import ReportForm
 from django.contrib.auth.models import User
 from register.models import UserProfile
 
@@ -229,6 +230,24 @@ def createListing(request):
         form = CreateNewListing()
 
     return render(request, 'createListing.html', {"form": form})
+
+def createReport(request, pk):
+    product = Product.objects.get(pk=pk)
+    if request.method == "POST" :
+        form = ReportForm(request.POST, request.FILES)
+        #needs to not allows the same user to report the same product multiple times
+        existingReport = ListingReport.objects.filter(reporter=request.user, product=product)
+        if form.is_valid() and not existingReport.exists():
+            reporter = request.user
+            category  = form.cleaned_data['reason']
+            description = form.cleaned_data['description']
+            ListingReport.objects.create(reporter=reporter,product=product,category=category,description=description)
+            return HttpResponseRedirect("/")
+        else:
+            return HttpResponse("Invalid form")
+    else:
+        form = ReportForm()
+    return render(request, 'report.html', {"form": form, "pk":pk})
 
 def leaderBoard(request:WSGIRequest) -> HttpResponse:
     '''

@@ -53,6 +53,7 @@ class Product(models.Model):
     category = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+    reportAmount = models.PositiveIntegerField(default=0)
     def get_category_display(self):
         return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
     
@@ -130,3 +131,15 @@ class AuctionProduct(Product):
         else:
             self.winner = None
             self.save()
+
+    
+class ListingReport(models.Model):
+    CATEGORY_CHOICES = [("Inappropriate conduct"),("Misleading content"),("Fraudulent behaviour"),("Fake listing"),("User safety")]
+    
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reports')
+    category = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    

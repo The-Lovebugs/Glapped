@@ -98,3 +98,24 @@ class CreateNewListing(forms.Form):
 
         return cleaned_data
 
+
+
+class ReportForm(forms.Form):
+    REPORT_REASONS = [
+        ('stolen_listing', 'Stolen Listing'),
+        ('inappropriate_image', 'Inappropriate Image'),
+        ('inappropriate_description', 'Inappropriate Description'),
+        ('inappropriate_title', 'Inappropriate Title'),
+        ('inappropriate_username', 'Inappropriate Username'),
+    ]
+    
+    reason = forms.ChoiceField(
+        label="Reason for Report",
+        choices=REPORT_REASONS,
+        required=True
+    )
+    description = forms.CharField(label="Extra detail", max_length=1000)
+    link = forms.URLField(
+        label="Link to Listing/User Profile",
+        required=False
+    )
