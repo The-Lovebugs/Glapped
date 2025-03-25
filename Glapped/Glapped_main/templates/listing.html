@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="product-container">
     <div class="product-details">
@@ -22,12 +22,16 @@
                     <!-- Buy Now Listing -->
                     <p class="price">{{ product.price }} points</p>
                     {% if request.user != product.user %}
-                    <div class="product-actions">
-                        <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
-                    </div>
-                    <div class="product-actions">
-                        <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
-                    </div>
+                        <div class="product-actions">
+                            <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
+                        </div>
+                        <div class="product-actions">
+                            <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
+                        </div>
+                        <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                            <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                            <h3>CO₂ Saved:</h3>
+                        </div>
                     {% endif %}
                     
 
