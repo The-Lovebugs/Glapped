@@ -15,7 +15,9 @@ The group members are:
 
 # Glapped
 
-Galpped Is an all-new vintage and second-hand fashion trading for your Campus. Built with the django framework it can be easily hosted and run to enable students of your university to trade clothing, as well as driving engagement for environmental causes on campus.
+Galpped Is an all-new vintage and second-hand fashion trading for your Campus. Built with the django framework it can be easily hosted and run to enable students of your university to trade clothing, as well as driving engagement for environmental causes on campus.#
+
+Access Glapped: ["https://glapped.store]
 
 ## PROCESS DOCUMENTS
 We use a trello/kanban board to manage our project, deligate tasks and track progress.
