@@ -291,14 +291,24 @@ class functionsAuctionProductTestCase(TestCase):
             }
         self.client.post('/register/', data=self.buyerdetails)
         self.user2 = User.objects.get(username=self.buyerdetails['username'])
+
         
-    def test_auction_bidGreater_successMessage(self):
+    def test_auction_bidLesser_errorMessage(self):
         #user1 creates listing
         loginAndPost(self, self.userdetails, '/createlisting/', data={**self.auctionproductdetails, 'image':self.image})
         #user2 buys listing
         listing_pk = AuctionProduct.objects.get(name=self.auctionproductdetails['title']).pk
         url = '/bid/' + str(listing_pk)
-        response = loginAndPost(self, self.buyerdetails, url, data={'bid_amount':15})
+        response = loginAndPost(self, self.buyerdetails, url, data={'bid_amount':'1'})
         message = list(response.context.get('messages'))[1]
-        print(str(message))
-        self.assertEqual(message.tags, "success")
+        self.assertEqual(message.tags, "error")
+        
+    def test_auction_sameSellerAndBuyer_errorMessage(self):
+        #user1 creates listing
+        loginAndPost(self, self.userdetails, '/createlisting/', data={**self.auctionproductdetails, 'image':self.image})
+        #user1 buys listing
+        listing_pk = AuctionProduct.objects.get(name=self.auctionproductdetails['title']).pk
+        url = '/bid/' + str(listing_pk)
+        response = loginAndPost(self, self.userdetails, url, data={'bid_amount':'15'})
+        message = list(response.context.get('messages'))[1]
+        self.assertEqual(message.tags, "error")
