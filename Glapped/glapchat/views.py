@@ -10,7 +10,8 @@ def index(request):
 
     return render(request, 'chat/index.html', {
         'sellerRooms': sellerRooms,
-        'userRooms': buyerRooms
+        'userRooms': buyerRooms,
+        'user' : request.user
     })
 
 def room(request, room_name):
