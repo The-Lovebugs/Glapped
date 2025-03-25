@@ -290,12 +290,18 @@ def buy(request:WSGIRequest, pk: int) -> HttpResponseRedirect:
     product.sold = True
     product.buyer = request.user
 
+    # Update water and CO2 savings
+    savings = CATEGORY_SAVINGS.get(product.category, CATEGORY_SAVINGS['misc'])
+    request.user.userprofile.water_saved += savings['water']
+    request.user.userprofile.co2_saved += savings['co2']
+
+
     product.user.userprofile.save()
     request.user.userprofile.save()
 
     product.save()
 
-    messages.success(request, "Purchase successful!")  # Success message after purchase
+    messages.success(request, f"Purchase successful! You saved {savings['water']} litres of water and {savings['co2']} kg of CO₂!")  # Success message after purchase
     return HttpResponseRedirect("/")  # Redirect to homepage
 
 
