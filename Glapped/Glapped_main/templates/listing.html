@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="product-container">
     <div class="product-details">
@@ -22,12 +22,20 @@
                     <!-- Buy Now Listing -->
                     <p class="price">{{ product.price }} points</p>
                     {% if request.user != product.user %}
-                    <div class="product-actions">
-                        <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
-                    </div>
-                    <div class="product-actions">
-                        <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
-                    </div>
+                        <div class="product-actions">
+                            <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
+                        </div>
+                        <div class="product-actions">
+                            <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
+                        </div>
+                        <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                            <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                            <h3>CO₂ Saved: {{ co2_saved }}kg</h3>
+                        </div>
+                        <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                            <img src="{% static 'water.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                            <h3>Water Saved: {{ water_saved }}L</h3>
+                        </div>
                     {% endif %}
                     
 
@@ -99,8 +107,16 @@
                                 <input style="padding: 8px; border-radius: 6px;" type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
                                 <button type="submit" class="bgb-button">Place Bid</button>
                             </div>
-                            <div class="product-actions">
+                            <div style="display: flex; justify-content: flex-start;" class="product-actions">
                                 <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
+                            </div>
+                            <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                                <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                                <h3>CO₂ Saved: {{ co2_saved }}kg</h3>
+                            </div>
+                            <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px; margin-bottom: 10px;">
+                                <img src="{% static 'water.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                                <h3>Water Saved: {{ water_saved }}L</h3>
                             </div>
                             {% endif %}
                         </form>
