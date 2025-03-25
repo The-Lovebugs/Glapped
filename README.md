@@ -95,36 +95,31 @@ First, download the current source code and locate the installed folder. Then Ru
 
 ## Usage/Examples
 ### Creating an account
-![Register](https://imgur.com/a/vJ44lGU)
+![Register](https://i.imgur.com/ie5jv35.png)
 
 You can register account on the site, via the join now button on the home page.
 
 ### Navigating listings
-![Listings](https://imgur.com/a/u4Ht5MN)
+![Listings](https://i.imgur.com/Lg2xoIu.png)
 Listings can be navigated via the homepage once logged in. To enter a listing, simply click on the the image and you'll be taken to its respective page.
 
 ### Creating a listing
-![Listings](https://imgur.com/a/Y7YEcZy)
+![Listings](https://i.imgur.com/s63cncE.png)
 
 In order to successfully create a listing, choose buy now or auction then complete the required fields and provide an html5 compatible image.
 
 ### View account information
-![Listings](https://imgur.com/a/vIc1Ke1)
+![Listings](https://i.imgur.com/7l1sneZ.png)
 
 In order to successfully create a listing, choose buy now or auction then complete the required fields and provide an html5 compatible image.
 
 ### View leaderboards
-![Listings](https://imgur.com/a/bjsk16w)
-
-To view the public leaderboard of co2 and water saved by users, navigate to the leaderboard section in the navbar
-
-### Check current chats
-![Listings](https://imgur.com/a/bjsk16w)
+![Listings](https://i.imgur.com/tgrPsDx.png)
 
 To view the public leaderboard of co2 and water saved by users, navigate to the leaderboard section in the navbar
 
 ### Glapchat
-![Listings](https://imgur.com/a/FubSNyo)
+![Listings](https://i.imgur.com/WH7rPmB.png)
 
 To view your current chats, navigate to glapchat in the navbar
 
