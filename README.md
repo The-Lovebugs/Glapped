@@ -69,7 +69,7 @@ The project can be built and ran using Python, we recommend version 3.13.2 and u
 ### Installing dependancies
 With python installed to path - 
 ```bash
-  pip install django pillow crispy-bootstrap4
+  pip install django pillow crispy-bootstrap4 daphne channels
 ```
 
   
