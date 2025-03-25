@@ -25,10 +25,11 @@
                     <div class="product-actions">
                         <a class="bgb-button" href="{% url 'buy' product.pk %}">Buy now</a>
                     </div>
-                    {% endif %}
                     <div class="product-actions">
                         <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
                     </div>
+                    {% endif %}
+                    
 
                 {% elif product.starting_bid is not None %}
                     <!-- Auction Listing -->
@@ -94,8 +95,13 @@
                         <form method="post" action="{% url 'place_bid' pk=product.pk %}" id="place-bid-form">
                             {% csrf_token %}
                             {% if request.user != product.user %}
-                            <input style="padding: 8px; border-radius: 6px;" type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
-                            <button type="submit" class="bgb-button">Place Bid</button>
+                            <div class="product-actions">
+                                <input style="padding: 8px; border-radius: 6px;" type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
+                                <button type="submit" class="bgb-button">Place Bid</button>
+                            </div>
+                            <div class="product-actions">
+                                <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
+                            </div>
                             {% endif %}
                         </form>
                     {% else %}

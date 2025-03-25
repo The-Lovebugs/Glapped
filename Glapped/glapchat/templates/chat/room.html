@@ -9,7 +9,7 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
-    <a href="/{{product.id}}">item discussing</a>
+    <a href="/{{product.id}}">Item Discussing</a>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
