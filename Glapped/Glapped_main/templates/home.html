@@ -3,19 +3,23 @@
 {% block content %}
 <div class="product-grid">
     {% for product in products %}
-    {% if product.sold == False or product.end_time %}
-    <a href="{% url 'product_page' product.pk %}">
-        <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
-            <div class="product-label">
-                {% if product.price %}
-                    <span class="buy-now">Buy Now: {{ product.price }} points</span>
-                {% elif product.starting_bid %}
-                    <span class="auction">Auction: Starting at {{ product.starting_bid }} points</span>
-                {% endif %}
-            </div>
-        </div>
-    </a>
-    {% endif %}
+        {% if product.user %}
+            {% if product.sold == False or product.end_time %}
+
+                <a href="{% url 'product_page' product.pk %}">
+                    <div class="product-preview" style="background-image: url('{{ product.image.url }}');">
+                        <div class="product-label">
+                            {% if product.price %}
+                                <span class="buy-now">Buy Now: {{ product.price }} points</span>
+                            {% elif product.starting_bid %}
+                                <span class="auction">Auction: Starting at {{ product.starting_bid }} points</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                
+            {% endif %}
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
