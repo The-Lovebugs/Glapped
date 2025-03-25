@@ -81,7 +81,7 @@ Or, if using [Anaconda]("https://www.anaconda.com/download") -
 then
 ```bash
   conda activate glapped_env
-  pip install django pillow crispy-bootstrap4 daphne collections
+  pip install django pillow crispy-bootstrap4 daphne channels
 ```
   
 ### Running the Server
