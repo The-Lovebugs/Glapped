@@ -52,22 +52,22 @@ def home(request:WSGIRequest) -> HttpResponse:
         )
 
 
-def product_page(request:WSGIRequest, pk) -> HttpResponse:
-    '''
-    Function to render an individual product page.
-    Loads data via a product key
-    '''
-    product = BuyNowProduct.objects.filter(pk=pk).first()
+def product_page(request, pk):
+    product = BuyNowProduct.objects.filter(pk=pk).first() or AuctionProduct.objects.filter(pk=pk).first()
 
     if not product:
-        product = AuctionProduct.objects.filter(pk=pk).first()
+        return render(request, '404.html', status=404)
 
-     # Show the 404 page if the product can't be found
-    if not product:
+    savings = CATEGORY_SAVINGS.get(product.category, CATEGORY_SAVINGS['misc'])
+    co2_saved = savings['co2']
+    water_saved = savings['water']
 
-        return render(request, '404.html', status=404) # Show the custom 404 page
-
-    return render(request, 'listing.html', {'product': product, 'now': timezone.now()})
+    return render(request, 'listing.html', {
+        'product': product,
+        'now': timezone.now(),
+        'co2_saved': co2_saved,
+        'water_saved': water_saved
+    })
 
 
 def account(request):

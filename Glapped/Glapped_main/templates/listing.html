@@ -30,7 +30,11 @@
                         </div>
                         <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
                             <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
-                            <h3>CO₂ Saved:</h3>
+                            <h3>CO₂ Saved: {{ co2_saved }}kg</h3>
+                        </div>
+                        <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                            <img src="{% static 'water.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                            <h3>Water Saved: {{ water_saved }}L</h3>
                         </div>
                     {% endif %}
                     
@@ -105,6 +109,14 @@
                             </div>
                             <div style="display: flex; justify-content: flex-start;" class="product-actions">
                                 <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
+                            </div>
+                            <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px;">
+                                <img src="{% static 'co2.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                                <h3>CO₂ Saved: {{ co2_saved }}kg</h3>
+                            </div>
+                            <div class="leaderboard-title" style="background-color: transparent; margin-top: 10px; margin-bottom: 10px;">
+                                <img src="{% static 'water.png' %}" alt="CO2 Icon" class="leaderboard-icon">
+                                <h3>Water Saved: {{ water_saved }}L</h3>
                             </div>
                             {% endif %}
                         </form>
