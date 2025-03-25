@@ -91,7 +91,7 @@
                     {% if product.end_time > now %}
                         <form method="post" action="{% url 'place_bid' pk=product.pk %}" id="place-bid-form">
                             {% csrf_token %}
-                            <input type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
+                            <input style="padding: 8px; border-radius: 6px;" type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
                             <button type="submit" class="bgb-button">Place Bid</button>
                         </form>
                     {% else %}

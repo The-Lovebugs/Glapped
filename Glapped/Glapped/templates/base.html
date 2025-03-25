@@ -13,6 +13,10 @@
                 <a href="/">
                     <img src="{% static 'bitmap2.png' %}" class="logo" alt="Home">
                 </a>
+                {% if user.is_authenticated %}
+                    <a href="/account" class="login-button">Your points: {{ user.userprofile.points }}</a>
+                {% endif %}
+
                 <ul>
                     <form action="{% url 'search' %}" method="GET" class="search">
                         <button type = submit class="search-button material-symbols-outlined search-icon">search</button>
@@ -25,7 +29,7 @@
                     <a href ="/leaderboard" class="login-button">Leaderboard</a>
                     <a href ="/glapchat" class="login-button">Glapchat</a>
 
-                    <a href ="/createlisting" class="bgb-button">+</a>
+                    <a href ="/createlisting" class="bgb-button">Add Listing +</a>
                     {% else %}
                     <a href="/login" class="login-button">Log In</a>
                     {% endif %}
@@ -48,7 +52,13 @@
     </head>
     <body>
         <footer class="footer">
-            <p>&copy; 2025 Glapped | All Rights Reserved</p>
+            <p>
+                &copy; 2025 Glapped | All Rights Reserved |
+                <a href="/terms_and_conditions" style="text-decoration: underline; color: inherit;">
+                    Privacy Policy
+                </a>
+            </p>
+            
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'logout' %}" class="logout-form">
                 {% csrf_token %}
