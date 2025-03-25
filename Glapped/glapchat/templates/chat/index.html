@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+        <div class="account-container" style="text-align: left; margin: 10px;">
         <h1>Discussions on your items:</h1>
+        <br> 
         {% for room in sellerRooms %}
-            <a href="{{room.ID}}"> {{ room.user }} regarding {{ room.product.name }} </a>
+        
+                <a class="bgb-button" href="{{room.ID}}"> <h3> {{ room.user }} </h3> <p>regarding {{ room.product.name }} </p> </a>
+            <br>
+            <br>
         {% endfor %}
-        <h1>Discussions on other peoples items:</h1>
-        {% for room in userRooms %}
-            <a href="{{room.ID}}"> {{ room.seller }} regarding {{ room.product.name }} <br> </a>
-        {% endfor %}
+    </div>
+        
+        <div class="account-container" style="text-align: left; margin: 10px;">
+            <h1>Discussions on other peoples items:</h1>
+
+            <br> 
+            {% for room in userRooms %}
+            
+                    <a class="bgb-button" href="{{room.ID}}"> <h3> {{ room.seller }} </h3> <p>regarding {{ room.product.name }} </p> </a>
+                <br>
+                <br>
+            {% endfor %}
 
     
 {% endblock %}
