@@ -99,7 +99,7 @@
                                 <input style="padding: 8px; border-radius: 6px;" type="number" step="1" name="bid_amount" placeholder="Enter bid amount" id="bid_amount" required>
                                 <button type="submit" class="bgb-button">Place Bid</button>
                             </div>
-                            <div class="product-actions">
+                            <div style="display: flex; justify-content: flex-start;" class="product-actions">
                                 <a class="bgb-button" href="{% url 'message' product.pk %}">Message</a>
                             </div>
                             {% endif %}
