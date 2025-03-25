@@ -311,7 +311,12 @@ def message(request, pk):
     room = Room.objects.create(user=request.user, seller=Product.objects.get(pk=pk).user, product=Product.objects.get(pk=pk))
     return HttpResponseRedirect("/glapchat/" + str(room.ID))
     
-
+def deleteAccount(request):
+    if request.method == "POST":
+        user = User.objects.get(username=request.user)
+        user.delete()
+        return HttpResponseRedirect("/")
+    return render(request, 'deleteAccount.html')
 
 def place_bid(request, pk):
     auction = get_object_or_404(AuctionProduct, id=pk)

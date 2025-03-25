@@ -51,6 +51,8 @@
 
     <p id="message"></p>
     <button class="bgb-button" id="open-in-maps" style="display: none; margin: 20px auto; display: block;" onclick="openInMaps()">Open in Maps</button>
+    <button class="bgb-button" id="open-in-maps" style="display: none; margin: 20px auto; display: block;" onclick="deleteAccount()">delete account</button>
+
 </div>
 
 <script>
@@ -125,6 +127,9 @@
         const lon = window.user_lon;
         const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
         window.open(mapUrl, '_blank');
+    }
+    function deleteAccount() {
+        window.location.href = "/deleteAccount";
     }
 
     window.onload = getLocation;
